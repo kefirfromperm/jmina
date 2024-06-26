@@ -26,7 +26,7 @@ public final class Mina {
         );
     }
 
-    public static void clear() {
+    public static void clean() {
         MinaContextHolder.removeContext();
     }
 }
