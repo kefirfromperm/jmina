@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 public class Simple {
     private final Logger log = LoggerFactory.getLogger(Simple.class);
 
-    public void toDoSomething() {
+    public void doSomething() {
         log.info("My first test with {}", "Mina");
     }
 }

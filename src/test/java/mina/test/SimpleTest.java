@@ -14,12 +14,12 @@ public class SimpleTest {
     }
 
     @Test
-    public void testToDoSomething() {
+    public void testSomething() {
         Mina.verify(
                 "mina.test.Simple", Level.INFO, null, "My first test with {}",
                 (arguments, throwable) -> Assertions.assertEquals("Mina", arguments[0])
         );
 
-        new Simple().toDoSomething();
+        new Simple().doSomething();
     }
 }
