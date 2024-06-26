@@ -1,5 +1,8 @@
 package mina.log;
 
+import mina.context.MinaCall;
+import mina.context.MinaContext;
+import mina.context.MinaContextHolder;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.AbstractLogger;
@@ -15,8 +18,14 @@ public class MinaLogger extends AbstractLogger {
     }
 
     @Override
-    protected void handleNormalizedLoggingCall(Level level, Marker marker, String s, Object[] objects, Throwable throwable) {
-
+    protected void handleNormalizedLoggingCall(Level level, Marker marker, String messagePattern, Object[] arguments, Throwable throwable) {
+        MinaContext context = MinaContextHolder.getContext();
+        Iterable<MinaCall> minaCalls = context.getExpectedCalls();
+        for (MinaCall minaCall : minaCalls) {
+            if (minaCall.getCondition().match(name, level, marker, messagePattern)) {
+                minaCall.getExpression().verify(arguments, throwable);
+            }
+        }
     }
 
     @Override
