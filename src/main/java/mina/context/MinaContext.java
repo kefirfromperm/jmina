@@ -1,15 +1,15 @@
 package mina.context;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public class MinaContext {
-    private final List<MinaCall> expectedCalls = new CopyOnWriteArrayList<>();
+    private final Set<MinaCall> expectedCalls = new CopyOnWriteArraySet<>();
 
     public MinaContext() {
     }
 
-    public List<MinaCall> getExpectedCalls() {
+    public Set<MinaCall> getExpectedCalls() {
         return expectedCalls;
     }
 

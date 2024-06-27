@@ -22,4 +22,14 @@ public class SimpleTest {
 
         new Simple().doSomething();
     }
+
+    @Test
+    public void testPartialLoggerName() {
+        Mina.verify(
+                "mina.test", Level.INFO, null, "My first test with {}",
+                (arguments, throwable) -> Assertions.assertEquals("Mina", arguments[0])
+        );
+
+        new Simple().doSomething();
+    }
 }

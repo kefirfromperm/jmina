@@ -18,9 +18,27 @@ public class MinaCondition {
 
     public boolean match(String loggerName, Level level, Marker marker, String messagePattern) {
         return
-                (this.loggerName == null || this.loggerName.equals(loggerName)) &&
+                loggerNameMatch(loggerName) &&
                         (this.level == null || this.level.equals(level)) &&
-                        (this.marker == null || this.marker.equals(marker)) &&
+                        (this.marker == null || (marker != null && marker.contains(this.marker))) &&
                         (this.messagePattern == null || this.messagePattern.equals(messagePattern));
+    }
+
+    private boolean loggerNameMatch(String loggerName) {
+        if (this.loggerName == null) {
+            return true;
+        }
+
+        if (loggerName == null) {
+            return false;
+        }
+
+        if (this.loggerName.equals(loggerName)) {
+            return true;
+        }
+
+        int argLength = loggerName.length();
+        int patternLength = this.loggerName.length();
+        return argLength > patternLength && loggerName.startsWith(this.loggerName) && loggerName.charAt(patternLength) == '.';
     }
 }
