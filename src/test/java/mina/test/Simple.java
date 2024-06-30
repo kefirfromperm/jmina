@@ -8,9 +8,11 @@ public class Simple {
 
     public void doSomething() {
         log.info("My first test with {}", "Mina");
+
+
     }
 
-    public void doForbidden() {
+    public void doException() {
         try {
             throw new RuntimeException("Test exception");
         } catch (Exception e) {
