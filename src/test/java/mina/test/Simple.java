@@ -9,4 +9,12 @@ public class Simple {
     public void doSomething() {
         log.info("My first test with {}", "Mina");
     }
+
+    public void doForbidden() {
+        try {
+            throw new RuntimeException("Test exception");
+        } catch (Exception e) {
+            log.error("Test error (c) {} {} {}", "Vitalii", null, "Samolovskikh", e);
+        }
+    }
 }

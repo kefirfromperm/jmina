@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.event.Level;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class SimpleTest {
     @AfterEach
     public void clean() {
@@ -31,5 +33,12 @@ public class SimpleTest {
         );
 
         new Simple().doSomething();
+    }
+
+    @Test
+    public void testForbidden() {
+        Mina.forbid(null, Level.ERROR, null, null);
+
+        assertThrows(AssertionError.class, () -> new Simple().doForbidden());
     }
 }

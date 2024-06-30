@@ -41,4 +41,14 @@ public class MinaCondition {
         int patternLength = this.loggerName.length();
         return argLength > patternLength && loggerName.startsWith(this.loggerName) && loggerName.charAt(patternLength) == '.';
     }
+
+    @Override
+    public String toString() {
+        return "MinaCondition{" +
+                "loggerName='" + loggerName + '\'' +
+                ", level=" + level +
+                ", marker=" + marker +
+                ", messagePattern='" + messagePattern + '\'' +
+                '}';
+    }
 }

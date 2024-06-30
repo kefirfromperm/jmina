@@ -26,6 +26,17 @@ public final class Mina {
         );
     }
 
+    public static void forbid(
+            String loggerName,
+            Level level,
+            Marker marker,
+            String messagePattern
+    ) {
+        MinaContextHolder.getContext().addForbiddenCall(
+                new MinaCondition(loggerName, level, marker, messagePattern)
+        );
+    }
+
     public static void clean() {
         MinaContextHolder.removeContext();
     }
