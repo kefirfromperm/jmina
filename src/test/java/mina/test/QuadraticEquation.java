@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.lang.Math.sqrt;
+
 public class QuadraticEquation {
     private final Logger log = LoggerFactory.getLogger(QuadraticEquation.class);
 
@@ -21,8 +23,8 @@ public class QuadraticEquation {
             List<Double> roots = new ArrayList<>();
 
             if (discriminant > 0) {
-                roots.add((-b - Math.sqrt(discriminant)) / (2 * a));
-                roots.add((-b + Math.sqrt(discriminant)) / (2 * a));
+                roots.add((-b - sqrt(discriminant)) / (2 * a));
+                roots.add((-b + sqrt(discriminant)) / (2 * a));
             } else {
                 roots.add(-b / (2 * a));
             }
