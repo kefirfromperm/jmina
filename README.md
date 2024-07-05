@@ -1,6 +1,6 @@
 # Mina
 
-![build](https://github.com/kefirfromperm/mina/actions/workflows/gradle.yml/badge.svg)(https://github.com/kefirfromperm/mina/actions/workflows/gradle.yml)
+[![build](https://github.com/kefirfromperm/mina/actions/workflows/gradle.yml/badge.svg)](https://github.com/kefirfromperm/mina/actions/workflows/gradle.yml)
 
 Mina is a library that extends the capabilities of unit tests in Java. Mina implements the Slf4j logger interface, so
 you can check the values of variables anywhere in your code during test execution.
