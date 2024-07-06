@@ -1,7 +1,9 @@
-package mina.context;
+package mina.core;
 
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
+
+import java.util.Objects;
 
 public class MinaCondition {
     private final String loggerName;
@@ -40,6 +42,26 @@ public class MinaCondition {
         int argLength = loggerName.length();
         int patternLength = this.loggerName.length();
         return argLength > patternLength && loggerName.startsWith(this.loggerName) && loggerName.charAt(patternLength) == '.';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MinaCondition condition = (MinaCondition) o;
+        return Objects.equals(loggerName, condition.loggerName) &&
+                level == condition.level &&
+                Objects.equals(marker, condition.marker) &&
+                Objects.equals(messagePattern, condition.messagePattern);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(loggerName, level, marker, messagePattern);
     }
 
     @Override

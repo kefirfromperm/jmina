@@ -1,7 +1,5 @@
 package mina.core;
 
-import mina.context.MinaCall;
-import mina.context.MinaCondition;
 import mina.context.MinaContext;
 import mina.context.MinaContextHolder;
 import org.slf4j.Marker;
@@ -48,18 +46,22 @@ public final class Mina {
 
     public static class MinaCallBuilder {
         private final MinaContext context;
-        private final MinaCondition minaCondition;
+        private final MinaCondition condition;
 
-        public MinaCallBuilder(MinaContext context, MinaCondition minaCondition) {
+        public MinaCallBuilder(MinaContext context, MinaCondition condition) {
             this.context = context;
-            this.minaCondition = minaCondition;
+            this.condition = condition;
         }
 
         public void then(MinaVerification verification) {
-            context.addExpectedCall(new MinaCall(minaCondition, verification));
+            context.addVerifyCall(condition, verification);
         }
 
         public void then(MinaArgumentVerification verification) {
+            then((MinaVerification) verification);
+        }
+
+        public void then(MinaArgumentThrowableVerification verification) {
             then((MinaVerification) verification);
         }
 

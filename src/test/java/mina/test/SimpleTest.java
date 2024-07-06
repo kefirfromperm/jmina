@@ -25,6 +25,18 @@ public class SimpleTest {
     }
 
     @Test
+    public void testIndex() {
+        Mina
+                .when("mina.test.Simple", Level.INFO, null, "My first test with {}")
+                .then((index, arguments, throwable) -> {
+                    Assertions.assertEquals("Mina", arguments[0]);
+                    Assertions.assertEquals(1, index);
+                });
+
+        new Simple().doSomething();
+    }
+
+    @Test
     public void testLoggerClass() {
         Mina
                 .when(Simple.class, Level.INFO, "My first test with {}")
