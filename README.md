@@ -6,7 +6,7 @@ Mina is a library that extends the capabilities of unit tests in Java. Mina impl
 you can check the values of variables anywhere in your code during test execution.
 
 For example, if you want to test a simple class which solves quadratic equation. Do you want to check the discriminant?
-Just add a log call in right place.
+Just add a log call to the right place.
 
 ```java
 public class QuadraticEquation {
@@ -35,19 +35,25 @@ public class QuadraticEquation {
 }
 ```
 
-Then in the unit-test use Mina.
+Then use Mina in the unit test.
 
 ```java
 public class QuadraticEquationTest {
     @Test
     public void testSolve() {
-        Mina.when(QuadraticEquation.class, Level.DEBUG, "discriminant: {}")
-                .then((Object[] args) ->
-                        assertEquals(9., (double) args[0])
+        Mina.when(QuadraticEquation.class, DEBUG, "discriminant: {}")
+                .then(args ->
+                              // Verify discriminant value inside the solve method
+                              assertEquals(9., (double) args[0])
                 );
 
+        // Run our code
         List<Double> roots = new QuadraticEquation().solve(1, -1, -2);
 
+        // Verify that all logs were called
+        Mina.assertAllCalled();
+
+        // Verify roots
         assertEquals(-1, roots.get(0));
         assertEquals(2, roots.get(1));
     }

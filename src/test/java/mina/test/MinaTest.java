@@ -24,7 +24,7 @@ public class MinaTest {
 
         new EmptyCode().doNothing();
 
-        assertThrows(AssertionError.class, Mina::verifyLost);
+        assertThrows(AssertionError.class, Mina::assertAllCalled);
     }
 
     @Test

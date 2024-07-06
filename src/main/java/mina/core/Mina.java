@@ -40,7 +40,7 @@ public final class Mina {
         );
     }
 
-    public static void verifyLost() {
+    public static void assertAllCalled() {
         MinaContextHolder.getContext().verifyLost();
     }
 
