@@ -36,5 +36,6 @@ tasks.test {
     useJUnitPlatform()
     systemProperty("slf4j.provider", "mina.log.MinaServiceProvider")
     systemProperty("mina.delegate.provider", "org.slf4j.simple.SimpleServiceProvider")
+    systemProperty("mina.context.global", "true")
 }
 
