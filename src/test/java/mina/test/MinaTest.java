@@ -3,23 +3,35 @@ package mina.test;
 
 import mina.core.Mina;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.event.Level;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class SimpleTest {
+public class MinaTest {
     @AfterEach
     public void clean() {
         Mina.clean();
     }
 
     @Test
+    public void testDoNothing() {
+        Mina
+                .when(EmptyCode.class, Level.INFO, "Log something: {}")
+                .then(arguments -> {
+                    assertEquals(3, arguments.length);
+                });
+
+        new EmptyCode().doNothing();
+
+        assertThrows(AssertionError.class, Mina::verifyLost);
+    }
+
+    @Test
     public void testSomething() {
         Mina
                 .when("mina.test.Simple", Level.INFO, null, "My first test with {}")
-                .then((arguments) -> Assertions.assertEquals("Mina", arguments[0]));
+                .then((arguments) -> assertEquals("Mina", arguments[0]));
 
         new Simple().doSomething();
     }
@@ -29,8 +41,8 @@ public class SimpleTest {
         Mina
                 .when("mina.test.Simple", Level.INFO, null, "My first test with {}")
                 .then((index, arguments, throwable) -> {
-                    Assertions.assertEquals("Mina", arguments[0]);
-                    Assertions.assertEquals(1, index);
+                    assertEquals("Mina", arguments[0]);
+                    assertEquals(1, index);
                 });
 
         new Simple().doSomething();
@@ -40,7 +52,7 @@ public class SimpleTest {
     public void testLoggerClass() {
         Mina
                 .when(Simple.class, Level.INFO, "My first test with {}")
-                .then((arguments) -> Assertions.assertEquals("Mina", arguments[0]));
+                .then((arguments) -> assertEquals("Mina", arguments[0]));
 
         new Simple().doSomething();
     }
@@ -49,7 +61,7 @@ public class SimpleTest {
     public void testPartialLoggerName() {
         Mina
                 .when("mina.test", Level.INFO, null, "My first test with {}")
-                .then((arguments) -> Assertions.assertEquals("Mina", arguments[0]));
+                .then((arguments) -> assertEquals("Mina", arguments[0]));
 
         new Simple().doSomething();
     }
@@ -58,7 +70,7 @@ public class SimpleTest {
     public void testException() {
         Mina
                 .when(null, Level.ERROR, null, null)
-                .thenThrowable((throwable) -> Assertions.assertInstanceOf(RuntimeException.class, throwable));
+                .thenThrowable((throwable) -> assertInstanceOf(RuntimeException.class, throwable));
 
         new Simple().doException();
     }
@@ -68,9 +80,9 @@ public class SimpleTest {
         Mina
                 .when(null, Level.ERROR, null, null)
                 .then((arguments, throwable) -> {
-                    Assertions.assertInstanceOf(RuntimeException.class, throwable);
-                    Assertions.assertEquals("Vitalii", arguments[0]);
-                    Assertions.assertNull(arguments[1]);
+                    assertInstanceOf(RuntimeException.class, throwable);
+                    assertEquals("Vitalii", arguments[0]);
+                    assertNull(arguments[1]);
                 });
 
         new Simple().doException();

@@ -40,6 +40,10 @@ public final class Mina {
         );
     }
 
+    public static void verifyLost() {
+        MinaContextHolder.getContext().verifyLost();
+    }
+
     public static void clean() {
         MinaContextHolder.removeContext();
     }

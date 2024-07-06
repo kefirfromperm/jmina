@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,6 +57,24 @@ public class MinaContext {
                 }
                 throw new AssertionError(stringWriter.toString());
             }
+        }
+    }
+
+    public void verifyLost() {
+        Set<MinaCondition> reportConditions = new HashSet<>();
+        for (MinaCondition condition : verifyCalls.keySet()) {
+            if (counters.get(condition) == null) {
+                reportConditions.add(condition);
+            }
+        }
+
+        if (!reportConditions.isEmpty()) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Some of mandatory logs were not called. Not called conditions:");
+            for (MinaCondition condition : reportConditions) {
+                builder.append("\n\t").append(condition);
+            }
+            throw new AssertionError(builder.toString());
         }
     }
 
