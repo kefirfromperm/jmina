@@ -18,7 +18,7 @@ public class MinaTest {
     public void testDoNothing() {
         Mina
                 .on(EmptyCode.class, Level.INFO, "Log something: {}")
-                .check(arguments -> assertEquals(3, arguments.length));
+                .checkArguments(arguments -> assertEquals(3, arguments.length));
 
         new EmptyCode().doNothing();
 
@@ -29,7 +29,7 @@ public class MinaTest {
     public void testSomething() {
         Mina
                 .on("mina.test.Simple", Level.INFO, null, "My first test with {}")
-                .check((arguments) -> assertEquals("Mina", arguments[0]));
+                .check(text -> assertEquals("Mina", text));
 
         new Simple().doSomething();
     }
@@ -50,7 +50,7 @@ public class MinaTest {
     public void testLoggerClass() {
         Mina
                 .on(Simple.class, Level.INFO, "My first test with {}")
-                .check((arguments) -> assertEquals("Mina", arguments[0]));
+                .check(text -> assertEquals("Mina", text));
 
         new Simple().doSomething();
     }
@@ -59,7 +59,7 @@ public class MinaTest {
     public void testPartialLoggerName() {
         Mina
                 .on("mina.test", Level.INFO, null, "My first test with {}")
-                .check((arguments) -> assertEquals("Mina", arguments[0]));
+                .check(text -> assertEquals("Mina", text));
 
         new Simple().doSomething();
     }

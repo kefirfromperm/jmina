@@ -46,7 +46,7 @@ public class QuadraticEquationTest {
         // Verify discriminant value inside the solve method
         Mina
                 .on(QuadraticEquation.class, DEBUG, "discriminant: {}")
-                .check(args -> assertEquals(9., (double) args[0]));
+                .check((Double discriminant) -> assertEquals(9, discriminant));
 
         // Run our code
         List<Double> roots = new QuadraticEquation().solve(1, -1, -2);
