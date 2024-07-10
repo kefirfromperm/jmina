@@ -35,17 +35,18 @@ public class QuadraticEquation {
 }
 ```
 
+[QuadraticEquation.java](src/test/java/mina/test/QuadraticEquation.java)
+
 Then use Mina in the unit test.
 
 ```java
 public class QuadraticEquationTest {
     @Test
     public void testSolve() {
-        Mina.when(QuadraticEquation.class, DEBUG, "discriminant: {}")
-                .then(args ->
-                              // Verify discriminant value inside the solve method
-                              assertEquals(9., (double) args[0])
-                );
+        // Verify discriminant value inside the solve method
+        Mina
+                .on(QuadraticEquation.class, DEBUG, "discriminant: {}")
+                .check(args -> assertEquals(9., (double) args[0]));
 
         // Run our code
         List<Double> roots = new QuadraticEquation().solve(1, -1, -2);
@@ -64,4 +65,6 @@ public class QuadraticEquationTest {
     }
 }
 ```
+
+[QuadraticEquationTest.java](src/test/java/mina/test/QuadraticEquationTest.java)
 

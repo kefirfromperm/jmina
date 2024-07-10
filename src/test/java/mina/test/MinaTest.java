@@ -17,10 +17,8 @@ public class MinaTest {
     @Test
     public void testDoNothing() {
         Mina
-                .when(EmptyCode.class, Level.INFO, "Log something: {}")
-                .then(arguments -> {
-                    assertEquals(3, arguments.length);
-                });
+                .on(EmptyCode.class, Level.INFO, "Log something: {}")
+                .check(arguments -> assertEquals(3, arguments.length));
 
         new EmptyCode().doNothing();
 
@@ -30,8 +28,8 @@ public class MinaTest {
     @Test
     public void testSomething() {
         Mina
-                .when("mina.test.Simple", Level.INFO, null, "My first test with {}")
-                .then((arguments) -> assertEquals("Mina", arguments[0]));
+                .on("mina.test.Simple", Level.INFO, null, "My first test with {}")
+                .check((arguments) -> assertEquals("Mina", arguments[0]));
 
         new Simple().doSomething();
     }
@@ -39,8 +37,8 @@ public class MinaTest {
     @Test
     public void testIndex() {
         Mina
-                .when("mina.test.Simple", Level.INFO, null, "My first test with {}")
-                .then((index, arguments, throwable) -> {
+                .on("mina.test.Simple", Level.INFO, null, "My first test with {}")
+                .check((index, arguments, throwable) -> {
                     assertEquals("Mina", arguments[0]);
                     assertEquals(1, index);
                 });
@@ -51,8 +49,8 @@ public class MinaTest {
     @Test
     public void testLoggerClass() {
         Mina
-                .when(Simple.class, Level.INFO, "My first test with {}")
-                .then((arguments) -> assertEquals("Mina", arguments[0]));
+                .on(Simple.class, Level.INFO, "My first test with {}")
+                .check((arguments) -> assertEquals("Mina", arguments[0]));
 
         new Simple().doSomething();
     }
@@ -60,8 +58,8 @@ public class MinaTest {
     @Test
     public void testPartialLoggerName() {
         Mina
-                .when("mina.test", Level.INFO, null, "My first test with {}")
-                .then((arguments) -> assertEquals("Mina", arguments[0]));
+                .on("mina.test", Level.INFO, null, "My first test with {}")
+                .check((arguments) -> assertEquals("Mina", arguments[0]));
 
         new Simple().doSomething();
     }
@@ -69,8 +67,8 @@ public class MinaTest {
     @Test
     public void testException() {
         Mina
-                .when(null, Level.ERROR, null, null)
-                .thenThrowable((throwable) -> assertInstanceOf(RuntimeException.class, throwable));
+                .on(Level.ERROR)
+                .checkThrowable((throwable) -> assertInstanceOf(RuntimeException.class, throwable));
 
         new Simple().doException();
     }
@@ -78,8 +76,8 @@ public class MinaTest {
     @Test
     public void testExceptionWithArguments() {
         Mina
-                .when(null, Level.ERROR, null, null)
-                .then((arguments, throwable) -> {
+                .on(Level.ERROR)
+                .check((arguments, throwable) -> {
                     assertInstanceOf(RuntimeException.class, throwable);
                     assertEquals("Vitalii", arguments[0]);
                     assertNull(arguments[1]);
@@ -90,7 +88,7 @@ public class MinaTest {
 
     @Test
     public void testForbidden() {
-        Mina.forbid(null, Level.ERROR, null, null);
+        Mina.on(Level.ERROR).exception();
 
         assertThrows(AssertionError.class, () -> new Simple().doException());
     }
