@@ -155,24 +155,24 @@ public final class Mina {
             this.condition = condition;
         }
 
-        public <T> void check(MinaSingleArgumentVerification<T> verification) {
-            check((MinaVerification) verification);
+        public void check(MinaCheck minaCheck) {
+            context.addVerifyCall(condition, minaCheck);
         }
 
-        public void check(MinaVerification verification) {
-            context.addVerifyCall(condition, verification);
+        public <T> void check(MinaSingleArgumentCheck<T> minaCheck) {
+            check((MinaCheck) minaCheck);
         }
 
-        public void checkArguments(MinaArgumentsVerification verification) {
-            check(verification);
+        public void checkArguments(MinaArgumentsCheck minaCheck) {
+            check(minaCheck);
         }
 
-        public void check(MinaArgumentsThrowableVerification verification) {
-            check((MinaVerification) verification);
+        public void check(MinaArgumentsThrowableCheck minaCheck) {
+            check((MinaCheck) minaCheck);
         }
 
-        public void checkThrowable(MinaThrowableVerification verification) {
-            check(verification);
+        public void checkThrowable(MinaThrowableCheck minaCheck) {
+            check(minaCheck);
         }
 
         public void exception() {

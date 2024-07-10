@@ -1,6 +1,6 @@
 package mina.core;
 
 @FunctionalInterface
-public interface MinaVerification {
+public interface MinaCheck {
     void verify(int index, Object[] arguments, Throwable throwable);
 }

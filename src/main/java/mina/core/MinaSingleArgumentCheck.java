@@ -1,6 +1,6 @@
 package mina.core;
 
-public interface MinaSingleArgumentVerification<T> extends MinaVerification {
+public interface MinaSingleArgumentCheck<T> extends MinaCheck {
     void verify(T argument);
 
     @Override

@@ -1,7 +1,7 @@
 package mina.core;
 
 @FunctionalInterface
-public interface MinaThrowableVerification extends MinaVerification {
+public interface MinaThrowableCheck extends MinaCheck {
     void verify(Throwable throwable);
 
     @Override
