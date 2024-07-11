@@ -6,7 +6,7 @@ public interface MinaSingleArgumentCheck<T> extends MinaCheck {
     @Override
     @SuppressWarnings("unchecked")
     default void verify(int index, Object[] arguments, Throwable throwable) {
-        if (arguments.length < 1) {
+        if (arguments == null || arguments.length < 1) {
             throw new IllegalArgumentException("The verification awaits at least one argument but found 0 arguments.");
         }
 

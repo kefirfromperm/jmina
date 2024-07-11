@@ -8,8 +8,6 @@ public class Simple {
 
     public void doSomething() {
         log.info("My first test with {}", "Mina");
-
-
     }
 
     public void doException() {

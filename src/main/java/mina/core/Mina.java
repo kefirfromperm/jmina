@@ -163,6 +163,10 @@ public final class Mina {
             check((MinaCheck) minaCheck);
         }
 
+        public void check(Object... arguments) {
+            check(new MinaEqualsCheck(arguments));
+        }
+
         public void checkArguments(MinaArgumentsCheck minaCheck) {
             check(minaCheck);
         }

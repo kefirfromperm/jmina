@@ -29,7 +29,7 @@ public class MinaTest {
     public void testSomething() {
         Mina
                 .on("mina.test.Simple", Level.INFO, null, "My first test with {}")
-                .check(text -> assertEquals("Mina", text));
+                .check("Mina");
 
         new Simple().doSomething();
     }
