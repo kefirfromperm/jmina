@@ -40,6 +40,6 @@ public class ConditionStep {
     }
 
     public void exception() {
-        context.addForbiddenCall(condition);
+        checkCanonical(new ForbiddenCheck(condition));
     }
 }
