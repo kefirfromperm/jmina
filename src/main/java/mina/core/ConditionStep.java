@@ -11,28 +11,32 @@ public class ConditionStep {
         this.condition = condition;
     }
 
-    public void check(MinaCheck minaCheck) {
+    public void checkCanonical(MinaCheck minaCheck) {
         context.addVerifyCall(condition, minaCheck);
     }
 
     public <T> void check(MinaSingleArgumentCheck<T> minaCheck) {
-        check((MinaCheck) minaCheck);
+        checkCanonical(minaCheck);
+    }
+
+    public <T1, T2> void check(MinaTwoArgumentsCheck<T1, T2> minaCheck) {
+        checkCanonical(minaCheck);
     }
 
     public void check(Object... arguments) {
-        check(new MinaEqualsCheck(arguments));
+        checkCanonical(new MinaEqualsCheck(arguments));
     }
 
     public void checkArguments(MinaArgumentsCheck minaCheck) {
-        check(minaCheck);
+        checkCanonical(minaCheck);
     }
 
-    public void check(MinaArgumentsThrowableCheck minaCheck) {
-        check((MinaCheck) minaCheck);
+    public void checkArguments(MinaArgumentsThrowableCheck minaCheck) {
+        checkCanonical(minaCheck);
     }
 
     public void checkThrowable(MinaThrowableCheck minaCheck) {
-        check(minaCheck);
+        checkCanonical(minaCheck);
     }
 
     public void exception() {

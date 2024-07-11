@@ -38,7 +38,7 @@ public class MinaTest {
     public void testIndex() {
         Mina
                 .on("mina.test.Simple", Level.INFO, null, "My first test with {}")
-                .check((index, arguments, throwable) -> {
+                .checkCanonical((index, arguments, throwable) -> {
                     assertEquals("Mina", arguments[0]);
                     assertEquals(1, index);
                 });
@@ -77,7 +77,7 @@ public class MinaTest {
     public void testExceptionWithArguments() {
         Mina
                 .on(Level.ERROR)
-                .check((arguments, throwable) -> {
+                .checkArguments((arguments, throwable) -> {
                     assertInstanceOf(RuntimeException.class, throwable);
                     assertEquals("Vitalii", arguments[0]);
                     assertNull(arguments[1]);
