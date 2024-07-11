@@ -1,4 +1,4 @@
-package mina.test;
+package mina.subject;
 
 public class EmptyCode {
     public void doNothing() {

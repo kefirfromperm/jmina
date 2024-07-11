@@ -35,7 +35,7 @@ public class QuadraticEquation {
 }
 ```
 
-[QuadraticEquation.java](src/test/java/mina/test/QuadraticEquation.java)
+[QuadraticEquation.java](src/test/java/mina/example/QuadraticEquation.java)
 
 Then use Mina in the unit test.
 
@@ -66,5 +66,5 @@ public class QuadraticEquationTest {
 }
 ```
 
-[QuadraticEquationTest.java](src/test/java/mina/test/QuadraticEquationTest.java)
+[QuadraticEquationTest.java](src/test/java/mina/example/QuadraticEquationTest.java)
 

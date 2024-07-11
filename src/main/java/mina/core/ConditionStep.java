@@ -27,6 +27,10 @@ public class ConditionStep {
         checkCanonical(new MinaEqualsCheck(arguments));
     }
 
+    public void check() {
+        checkCanonical(DoNothingCheck.getInstance());
+    }
+
     public void checkArguments(MinaArgumentsCheck minaCheck) {
         checkCanonical(minaCheck);
     }

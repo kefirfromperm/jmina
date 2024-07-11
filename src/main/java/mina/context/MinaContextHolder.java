@@ -37,11 +37,8 @@ public final class MinaContextHolder {
         if (useGlobalContext) {
             GLOBAL.set(null);
         } else {
-            removeThreadLocalContext();
+            CONTEXT.remove();
         }
     }
 
-    private static void removeThreadLocalContext() {
-        CONTEXT.remove();
-    }
 }

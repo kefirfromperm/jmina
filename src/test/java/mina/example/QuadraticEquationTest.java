@@ -1,4 +1,4 @@
-package mina.test;
+package mina.example;
 
 import mina.core.Mina;
 import org.junit.jupiter.api.AfterEach;
