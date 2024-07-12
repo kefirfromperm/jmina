@@ -1,9 +1,8 @@
 package mina.subject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
-import org.slf4j.MarkerFactory;
+import org.slf4j.*;
+
+import java.util.Arrays;
 
 public class Simple {
     private final Logger log = LoggerFactory.getLogger(Simple.class);
@@ -76,5 +75,15 @@ public class Simple {
         } catch (Exception e) {
             log.error("Test error (c) {} {} {}", "Vitalii", null, "Samolovskikh", e);
         }
+    }
+
+    public void doMdc() {
+        MDC.put("key", "value");
+        log.info("test MDC");
+        MDC.remove("key");
+    }
+
+    public void doParallel() {
+        Arrays.asList(1, 2, 3, 4, 5).parallelStream().forEach(value -> log.info("value {}", value));
     }
 }

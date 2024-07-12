@@ -5,7 +5,11 @@ import mina.subject.EmptyCode;
 import mina.subject.Simple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static mina.core.Mina.assertAllCalled;
@@ -14,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.slf4j.event.Level.*;
 
 public class MinaTest {
+    private final Logger log = LoggerFactory.getLogger(MinaTest.class);
+
     @AfterEach
     public void clean() {
         Mina.clean();
@@ -172,7 +178,64 @@ public class MinaTest {
 
         new Simple().doSomething();
 
+        assertEquals(5, count.get());
+
         assertAllCalled();
+    }
+
+    @Test
+    public void testMdc() {
+        on(INFO).check(() -> assertEquals("value", MDC.get("key")));
+        new Simple().doMdc();
+        assertNull(MDC.get("key"));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testSwitchGlobalToThreadLocal() {
+        Mina.useGlobalContext();
+        Mina.useThreadLocalContext();
+    }
+
+    @Test
+    public void testSwitchThreadLocalToGlobal() {
+        Mina.useThreadLocalContext();
+        Mina.useGlobalContext();
+    }
+
+    @Test
+    public void testParallel() {
+        // Just initialize Common Pool
+        Arrays.asList(1, 2, 3, 4, 5).parallelStream().forEach(value -> log.info("value {}", value));
+
+        // So context will not be propagated to the threads of common fork join pool
+        // And the test will not work properly in a thread local context
+        Mina.useGlobalContext();
+
+        AtomicInteger count = new AtomicInteger();
+        on(Simple.class).checkCanonical(
+                (index, arguments, throwable) -> assertEquals(count.incrementAndGet(), index)
+        );
+
+        new Simple().doParallel();
+
+        assertEquals(5, count.get());
+
+        assertAllCalled();
+    }
+
+    @Test
+    public void testParallelTests() {
+        // When using global context
+        Mina.useGlobalContext();
+
+        // We try to run Mina in parallel tests
+        assertThrows(IllegalStateException.class, () ->
+                Arrays.asList(1, 2, 3, 4, 5).parallelStream().forEach(value -> {
+                    log.info("test {}", value);
+                    on().check();
+                })
+        );
     }
 
     @Test

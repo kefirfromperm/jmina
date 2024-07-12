@@ -15,6 +15,10 @@ public class ConditionStep {
         context.addVerifyCall(condition, check);
     }
 
+    public void check(NoArgumentsCheck check) {
+        checkCanonical(check);
+    }
+
     public <T> void check(SingleArgumentCheck<T> minaCheck) {
         checkCanonical(minaCheck);
     }

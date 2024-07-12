@@ -9,12 +9,22 @@ public final class Mina {
     private Mina() {
     }
 
+    public static void useGlobalContext() {
+        MinaContextHolder.useGlobalContext();
+    }
+
+    public static void useThreadLocalContext() {
+        MinaContextHolder.assertParallelAccessToGlobalContext();
+        MinaContextHolder.useThreadLocalContext();
+    }
+
     public static ConditionStep on(
             String loggerName,
             Level level,
             Marker marker,
             String messagePattern
     ) {
+        MinaContextHolder.assertParallelAccessToGlobalContext();
         return new ConditionStep(
                 MinaContextHolder.getContext(),
                 new Condition(loggerName, level, marker, messagePattern)

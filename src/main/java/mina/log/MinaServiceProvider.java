@@ -4,6 +4,7 @@ import org.slf4j.ILoggerFactory;
 import org.slf4j.IMarkerFactory;
 import org.slf4j.helpers.BasicMDCAdapter;
 import org.slf4j.helpers.BasicMarkerFactory;
+import org.slf4j.helpers.NOPMDCAdapter;
 import org.slf4j.helpers.Reporter;
 import org.slf4j.spi.MDCAdapter;
 import org.slf4j.spi.SLF4JServiceProvider;
@@ -49,9 +50,21 @@ public class MinaServiceProvider implements SLF4JServiceProvider {
     public void initialize() {
         loadDelegate();
 
-        loggerFactory = delegate != null ? new MinaLoggerFactory(delegate.getLoggerFactory()) : new MinaLoggerFactory();
-        markerFactory = delegate != null ? delegate.getMarkerFactory() : new BasicMarkerFactory();
-        mdcAdapter = delegate != null ? delegate.getMDCAdapter() : new BasicMDCAdapter();
+        if (delegate != null) {
+            loggerFactory = new MinaLoggerFactory(delegate.getLoggerFactory());
+            markerFactory = delegate.getMarkerFactory();
+
+            MDCAdapter delegateMDCAdapter = delegate.getMDCAdapter();
+            if (delegateMDCAdapter != null && !(delegateMDCAdapter instanceof NOPMDCAdapter)) {
+                mdcAdapter = delegateMDCAdapter;
+            } else {
+                mdcAdapter = new BasicMDCAdapter();
+            }
+        } else {
+            loggerFactory = new MinaLoggerFactory();
+            markerFactory = new BasicMarkerFactory();
+            mdcAdapter = new BasicMDCAdapter();
+        }
     }
 
     private void loadDelegate() {

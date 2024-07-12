@@ -22,7 +22,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testRuntimeOnly("org.slf4j:slf4j-simple:2.0.13")
+    testImplementation("org.slf4j:slf4j-simple:2.0.13")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -36,6 +36,6 @@ tasks.test {
     useJUnitPlatform()
     systemProperty("slf4j.provider", "mina.log.MinaServiceProvider")
     systemProperty("mina.delegate.provider", "org.slf4j.simple.SimpleServiceProvider")
-    systemProperty("mina.context.global", "true")
+    systemProperty("mina.context.global", "false")
 }
 

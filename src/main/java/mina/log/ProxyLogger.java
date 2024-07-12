@@ -15,6 +15,13 @@ public class ProxyLogger implements Logger {
         this.delegates = Collections.unmodifiableList(delegates);
     }
 
+    /**
+     * For testing purposes only
+     */
+    List<Logger> getDelegates() {
+        return delegates;
+    }
+
     @Override
     public String getName() {
         return name;
