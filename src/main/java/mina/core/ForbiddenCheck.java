@@ -6,10 +6,10 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class ForbiddenCheck implements MinaCheck {
-    private final MinaCondition condition;
+public class ForbiddenCheck implements Check {
+    private final Condition condition;
 
-    public ForbiddenCheck(MinaCondition condition) {
+    public ForbiddenCheck(Condition condition) {
         this.condition = condition;
     }
 

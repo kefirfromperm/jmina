@@ -4,22 +4,22 @@ import mina.context.MinaContext;
 
 public class ConditionStep {
     private final MinaContext context;
-    private final MinaCondition condition;
+    private final Condition condition;
 
-    ConditionStep(MinaContext context, MinaCondition condition) {
+    ConditionStep(MinaContext context, Condition condition) {
         this.context = context;
         this.condition = condition;
     }
 
-    public void checkCanonical(MinaCheck minaCheck) {
-        context.addVerifyCall(condition, minaCheck);
+    public void checkCanonical(Check check) {
+        context.addVerifyCall(condition, check);
     }
 
-    public <T> void check(MinaSingleArgumentCheck<T> minaCheck) {
+    public <T> void check(SingleArgumentCheck<T> minaCheck) {
         checkCanonical(minaCheck);
     }
 
-    public <T1, T2> void check(MinaTwoArgumentsCheck<T1, T2> minaCheck) {
+    public <T1, T2> void check(TwoArgumentsCheck<T1, T2> minaCheck) {
         checkCanonical(minaCheck);
     }
 
@@ -28,23 +28,23 @@ public class ConditionStep {
     }
 
     public void check(Object... arguments) {
-        checkCanonical(new MinaEqualsCheck(arguments));
+        checkCanonical(new EqualsCheck(arguments));
     }
 
     public void check() {
         checkCanonical(DoNothingCheck.getInstance());
     }
 
-    public void checkArguments(ArrayArgumentsCheck minaCheck) {
-        checkCanonical(minaCheck);
+    public void checkArguments(ArrayArgumentsCheck check) {
+        checkCanonical(check);
     }
 
-    public void checkArguments(MinaArgumentsThrowableCheck minaCheck) {
-        checkCanonical(minaCheck);
+    public void checkArguments(ArgumentsThrowableCheck check) {
+        checkCanonical(check);
     }
 
-    public void checkThrowable(MinaThrowableCheck minaCheck) {
-        checkCanonical(minaCheck);
+    public void checkThrowable(ThrowableCheck check) {
+        checkCanonical(check);
     }
 
     public void exception() {

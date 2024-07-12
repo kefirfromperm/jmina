@@ -17,7 +17,7 @@ public final class Mina {
     ) {
         return new ConditionStep(
                 MinaContextHolder.getContext(),
-                new MinaCondition(loggerName, level, marker, messagePattern)
+                new Condition(loggerName, level, marker, messagePattern)
         );
     }
 

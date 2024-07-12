@@ -2,10 +2,10 @@ package mina.core;
 
 import java.util.Objects;
 
-class MinaEqualsCheck implements MinaCheck {
+class EqualsCheck implements Check {
     private final Object[] expected;
 
-    public MinaEqualsCheck(Object[] expected) {
+    public EqualsCheck(Object[] expected) {
         if (expected == null) {
             throw new IllegalArgumentException("Expected arguments can't be null.");
         }

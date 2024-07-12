@@ -5,13 +5,13 @@ import org.slf4j.event.Level;
 
 import java.util.Objects;
 
-public class MinaCondition {
+public class Condition {
     private final String loggerName;
     private final Level level;
     private final Marker marker;
     private final String messagePattern;
 
-    public MinaCondition(String loggerName, Level level, Marker marker, String messagePattern) {
+    public Condition(String loggerName, Level level, Marker marker, String messagePattern) {
         this.loggerName = loggerName;
         this.level = level;
         this.marker = marker;
@@ -52,7 +52,7 @@ public class MinaCondition {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        MinaCondition condition = (MinaCondition) o;
+        Condition condition = (Condition) o;
         return Objects.equals(loggerName, condition.loggerName) &&
                 level == condition.level &&
                 Objects.equals(marker, condition.marker) &&
@@ -66,7 +66,7 @@ public class MinaCondition {
 
     @Override
     public String toString() {
-        return "MinaCondition{" +
+        return "Condition{" +
                 "loggerName='" + loggerName + '\'' +
                 ", level=" + level +
                 ", marker=" + marker +

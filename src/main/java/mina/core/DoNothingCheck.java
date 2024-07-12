@@ -1,12 +1,12 @@
 package mina.core;
 
-public class DoNothingCheck implements MinaCheck {
-    private static final MinaCheck INSTANCE = new DoNothingCheck();
+public class DoNothingCheck implements Check {
+    private static final Check INSTANCE = new DoNothingCheck();
 
     private DoNothingCheck() {
     }
 
-    public static MinaCheck getInstance() {
+    public static Check getInstance() {
         return INSTANCE;
     }
 

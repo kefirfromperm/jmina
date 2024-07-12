@@ -1,7 +1,7 @@
 package mina.core;
 
 @FunctionalInterface
-public interface ThreeArgumentsCheck<T1, T2, T3> extends MinaCheck {
+public interface ThreeArgumentsCheck<T1, T2, T3> extends Check {
     void verify(T1 argument1, T2 argument2, T3 argument3);
 
     @Override

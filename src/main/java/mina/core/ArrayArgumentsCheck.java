@@ -1,7 +1,7 @@
 package mina.core;
 
 @FunctionalInterface
-public interface ArrayArgumentsCheck extends MinaCheck {
+public interface ArrayArgumentsCheck extends Check {
     void verify(Object[] arguments);
 
     @Override
