@@ -23,6 +23,10 @@ public class ConditionStep {
         checkCanonical(minaCheck);
     }
 
+    public <T1, T2, T3> void check(ThreeArgumentsCheck<T1, T2, T3> minaCheck) {
+        checkCanonical(minaCheck);
+    }
+
     public void check(Object... arguments) {
         checkCanonical(new MinaEqualsCheck(arguments));
     }
@@ -31,7 +35,7 @@ public class ConditionStep {
         checkCanonical(DoNothingCheck.getInstance());
     }
 
-    public void checkArguments(MinaArgumentsCheck minaCheck) {
+    public void checkArguments(ArrayArgumentsCheck minaCheck) {
         checkCanonical(minaCheck);
     }
 

@@ -92,6 +92,80 @@ public class MinaTest {
     }
 
     @Test
+    public void testMultiArguments() {
+        // No arguments
+        on("no arguments").check();
+
+        // One argument
+        on(INFO, "{}").check((Integer arg) -> assertEquals(1, arg));
+        on(ERROR, "no arguments")
+                .check((Throwable throwable) -> assertEquals("Test runtime exception 1", throwable.getMessage()));
+
+        // Two arguments
+        on(INFO, "{} {}").check((Integer arg1, String arg2) -> {
+            assertEquals(2, arg1);
+            assertEquals("test 1", arg2);
+        });
+        on(ERROR, "{}").check((Integer arg, Throwable throwable) -> {
+            assertEquals(3, arg);
+            assertEquals("Test runtime exception 2", throwable.getMessage());
+        });
+
+        // Three arguments
+        on(INFO, "{} {} {}").check((Integer arg1, String arg2, Character arg3) -> {
+            assertEquals(4, arg1);
+            assertEquals("test 2", arg2);
+            assertEquals('c', arg3);
+        });
+        on(ERROR, "{} {}").check((Integer arg1, String arg2, Throwable throwable) -> {
+            assertEquals(5, arg1);
+            assertEquals("test 3", arg2);
+            assertEquals("Test runtime exception 3", throwable.getMessage());
+        });
+
+        new Simple().doMultiArguments();
+        assertAllCalled();
+    }
+
+    @Test
+    public void testMultiArgumentsUsingArray() {
+        // No arguments
+        on("no arguments").check();
+
+        // One argument
+        on(INFO, "{}").checkArguments((Object[] args) -> assertEquals(1, args[0]));
+        on(ERROR, "no arguments").checkThrowable((Throwable throwable) ->
+                                                         assertEquals(
+                                                                 "Test runtime exception 1", throwable.getMessage())
+        );
+
+        // Two arguments
+        on(INFO, "{} {}").checkArguments((Object[] args) -> {
+            assertEquals(2, args[0]);
+            assertEquals("test 1", args[1]);
+        });
+        on(ERROR, "{}").checkArguments((Object[] args, Throwable throwable) -> {
+            assertEquals(3, args[0]);
+            assertEquals("Test runtime exception 2", throwable.getMessage());
+        });
+
+        // Three arguments
+        on(INFO, "{} {} {}").checkArguments((Object[] args) -> {
+            assertEquals(4, args[0]);
+            assertEquals("test 2", args[1]);
+            assertEquals('c', args[2]);
+        });
+        on(ERROR, "{} {}").checkArguments((Object[] args, Throwable throwable) -> {
+            assertEquals(5, args[0]);
+            assertEquals("test 3", args[1]);
+            assertEquals("Test runtime exception 3", throwable.getMessage());
+        });
+
+        new Simple().doMultiArguments();
+        assertAllCalled();
+    }
+
+    @Test
     public void testIndex() {
         AtomicInteger count = new AtomicInteger();
         on(Simple.class).checkCanonical((index, arguments, throwable) -> assertEquals(count.incrementAndGet(), index));

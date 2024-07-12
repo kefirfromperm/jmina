@@ -17,7 +17,7 @@ public interface MinaTwoArgumentsCheck<T1, T2> extends MinaCheck {
             verify((T1) arguments[0], (T2) throwable);
         } else {
             throw new AssertionError(
-                    "Call #" + index + ": The verification awaits at least two arguments or an argument an a throwable but found " +
+                    "Call #" + index + ": The verification awaits at least two arguments or an argument and a throwable but found " +
                             arguments.length + " arguments and " + (throwable == null ? "no" : "a") + " throwable."
             );
         }

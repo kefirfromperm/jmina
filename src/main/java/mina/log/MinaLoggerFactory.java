@@ -28,6 +28,7 @@ public class MinaLoggerFactory implements ILoggerFactory {
      * This method will call {@link #createLogger(String)} if the logger
      * has not been created yet.
      */
+    @Override
     public Logger getLogger(String name) {
         return loggerMap.computeIfAbsent(name, this::createLogger);
     }
@@ -45,18 +46,5 @@ public class MinaLoggerFactory implements ILoggerFactory {
         delegates.add(delegate.getLogger(name));
         delegates.add(minaLogger);
         return new ProxyLogger(name, delegates);
-    }
-
-    /**
-     * Clear the internal logger cache.
-     * <p>
-     * This method is intended to be called by classes (in the same package or
-     * subclasses) for testing purposes. This method is internal. It can be
-     * modified, renamed or removed at any time without notice.
-     * <p>
-     * You are strongly discouraged from calling this method in production code.
-     */
-    protected void reset() {
-        loggerMap.clear();
     }
 }

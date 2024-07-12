@@ -25,6 +25,19 @@ public class Simple {
         log.info("message");
     }
 
+    public void doMultiArguments() {
+        log.info("no arguments");
+
+        log.info("{}", 1);
+        log.error("no arguments", new RuntimeException("Test runtime exception 1"));
+
+        log.info("{} {}", 2, "test 1");
+        log.error("{}", 3, new RuntimeException("Test runtime exception 2"));
+
+        log.info("{} {} {}", 4, "test 2", 'c');
+        log.error("{} {}", 5, "test 3", new RuntimeException("Test runtime exception 3"));
+    }
+
     public void doConditions() {
         // Logger, level, marker
         log.debug(MARKER_1, "message 1 {}", 1);
