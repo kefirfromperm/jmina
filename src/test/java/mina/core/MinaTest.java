@@ -1,7 +1,6 @@
 package mina.core;
 
 
-import mina.subject.EmptyCode;
 import mina.subject.Simple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -23,16 +22,6 @@ public class MinaTest {
     @AfterEach
     public void clean() {
         Mina.clean();
-    }
-
-    @Test
-    public void testDoNothing() {
-        on(EmptyCode.class, INFO, "Log something: {}")
-                .checkArguments(arguments -> assertEquals(3, arguments.length));
-
-        new EmptyCode().doNothing();
-
-        assertThrows(AssertionError.class, Mina::assertAllCalled);
     }
 
     @Test

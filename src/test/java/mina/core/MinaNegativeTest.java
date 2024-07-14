@@ -1,20 +1,32 @@
 package mina.core;
 
+import mina.exception.ArgumentsCountException;
+import mina.subject.EmptyCode;
 import mina.subject.Simple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.IncompleteExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static mina.core.Mina.assertAllCalled;
 import static mina.core.Mina.on;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.slf4j.event.Level.ERROR;
 import static org.slf4j.event.Level.INFO;
 
 public class MinaNegativeTest {
     Logger log = LoggerFactory.getLogger(MinaNegativeTest.class);
+
+    @Test
+    public void testDoNothing() {
+        on(EmptyCode.class, INFO, "Log something: {}")
+                .checkArguments(arguments -> assertEquals(3, arguments.length));
+
+        new EmptyCode().doNothing();
+
+        assertThrows(IncompleteExecutionException.class, Mina::assertAllCalled);
+    }
 
     @Test
     public void testForbidden() {
@@ -28,7 +40,7 @@ public class MinaNegativeTest {
     @Test
     public void testSingleArgumentMismatchCount() {
         on(INFO).check((String str) -> assertTrue(true));
-        assertThrows(IllegalArgumentException.class, () -> log.info("test"));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test"));
         assertAllCalled();
     }
 
@@ -42,14 +54,14 @@ public class MinaNegativeTest {
     @Test
     public void testTwoArgumentsMismatchCount() {
         on(INFO).check((String str, Integer count) -> assertTrue(true));
-        assertThrows(IllegalArgumentException.class, () -> log.info("test {}", "test"));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test {}", "test"));
         assertAllCalled();
     }
 
     @Test
     public void testTwoArgumentsZeroCount() {
         on(INFO).check((String str, Integer count) -> assertTrue(true));
-        assertThrows(IllegalArgumentException.class, () -> log.info("test"));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test"));
         assertAllCalled();
     }
 
@@ -63,14 +75,14 @@ public class MinaNegativeTest {
     @Test
     public void testThreeArgumentsMismatchCount() {
         on(INFO).check((String str, Integer count, Double pi) -> assertTrue(true));
-        assertThrows(IllegalArgumentException.class, () -> log.info("test {} {}", "test", 5));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test {} {}", "test", 5));
         assertAllCalled();
     }
 
     @Test
     public void testThreeArgumentsZeroCount() {
         on(INFO).check((String str, Integer count, Double pi) -> assertTrue(true));
-        assertThrows(IllegalArgumentException.class, () -> log.info("test"));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test"));
         assertAllCalled();
     }
 

@@ -17,7 +17,7 @@ public class ForbiddenCheck implements Check {
     public void verify(int index, Object[] arguments, Throwable throwable) {
         StringWriter stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
-        writer.println(MessageFormat.format("A forbidden log was caught on condition [{0}].", condition));
+        writer.println(MessageFormat.format("A forbidden log was caught on a condition [{0}].", condition));
         if (arguments != null) {
             writer.println(
                     MessageFormat.format(

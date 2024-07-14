@@ -1,5 +1,7 @@
 package mina.core;
 
+import mina.exception.ArgumentsCountException;
+
 @FunctionalInterface
 public interface SingleArgumentCheck<T> extends Check {
     void verify(T argument);
@@ -13,9 +15,7 @@ public interface SingleArgumentCheck<T> extends Check {
             if (throwable != null) {
                 verify((T) throwable);
             } else {
-                throw new IllegalArgumentException(
-                        "Call #" + index + ": The verification awaits at least one argument or a throwable but found 0 arguments and no throwable."
-                );
+                throw new ArgumentsCountException(index, 1, 0, false);
             }
         }
     }

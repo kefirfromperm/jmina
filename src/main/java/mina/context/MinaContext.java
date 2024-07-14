@@ -2,6 +2,7 @@ package mina.context;
 
 import mina.core.Check;
 import mina.core.Condition;
+import org.opentest4j.IncompleteExecutionException;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
 
@@ -46,7 +47,7 @@ public class MinaContext {
             for (Condition condition : reportConditions) {
                 builder.append("\n\t").append(condition);
             }
-            throw new AssertionError(builder.toString());
+            throw new IncompleteExecutionException(builder.toString());
         }
     }
 

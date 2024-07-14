@@ -18,7 +18,9 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     implementation("org.slf4j:slf4j-api:2.0.13")
+    implementation("org.opentest4j:opentest4j:1.3.0")
 
+    // Test dependencies
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
