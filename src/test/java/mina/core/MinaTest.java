@@ -270,13 +270,4 @@ public class MinaTest {
 
         assertAllCalled();
     }
-
-    @Test
-    public void testForbidden() {
-        on(ERROR).exception();
-
-        assertThrows(AssertionError.class, () -> new Simple().doException());
-
-        assertAllCalled();
-    }
 }

@@ -13,7 +13,7 @@ public interface SingleArgumentCheck<T> extends Check {
             if (throwable != null) {
                 verify((T) throwable);
             } else {
-                throw new AssertionError(
+                throw new IllegalArgumentException(
                         "Call #" + index + ": The verification awaits at least one argument or a throwable but found 0 arguments and no throwable."
                 );
             }

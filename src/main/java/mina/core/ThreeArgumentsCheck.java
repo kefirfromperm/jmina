@@ -8,7 +8,7 @@ public interface ThreeArgumentsCheck<T1, T2, T3> extends Check {
     @SuppressWarnings("unchecked")
     default void verify(int index, Object[] arguments, Throwable throwable) {
         if (arguments == null) {
-            throw new AssertionError("Call #" + index + ": Parameter arguments can't be null.");
+            throw new IllegalArgumentException("Call #" + index + ": Parameter arguments can't be null.");
         }
 
         if (arguments.length >= 3) {
@@ -16,7 +16,7 @@ public interface ThreeArgumentsCheck<T1, T2, T3> extends Check {
         } else if (arguments.length == 2 && throwable != null) {
             verify((T1) arguments[0], (T2) arguments[1], (T3) throwable);
         } else {
-            throw new AssertionError(
+            throw new IllegalArgumentException(
                     "Call #" + index + ": The verification awaits at least three arguments or two arguments and a throwable but found " +
                             arguments.length + " arguments and " + (throwable == null ? "no" : "a") + " throwable."
             );
