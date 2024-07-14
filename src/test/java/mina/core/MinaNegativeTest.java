@@ -114,6 +114,18 @@ public class MinaNegativeTest {
         assertThrows(IllegalArgumentException.class, () -> on(INFO).check((Object[]) null));
     }
 
+    @Test
+    public void testNullCheck() {
+        assertThrows(IllegalArgumentException.class, () -> on(INFO).checkCanonical(null));
+        assertThrows(IllegalArgumentException.class, () -> on(INFO).check((NoArgumentsCheck) null));
+        assertThrows(IllegalArgumentException.class, () -> on(INFO).check((SingleArgumentCheck<?>) null));
+        assertThrows(IllegalArgumentException.class, () -> on(INFO).check((TwoArgumentsCheck<?, ?>) null));
+        assertThrows(IllegalArgumentException.class, () -> on(INFO).check((ThreeArgumentsCheck<?, ?, ?>) null));
+        assertThrows(IllegalArgumentException.class, () -> on(INFO).checkArguments((ArrayArgumentsCheck) null));
+        assertThrows(IllegalArgumentException.class, () -> on(INFO).checkArguments((ArgumentsThrowableCheck) null));
+        assertThrows(IllegalArgumentException.class, () -> on(INFO).checkThrowable(null));
+    }
+
     @AfterEach
     public void clean() {
         Mina.clean();

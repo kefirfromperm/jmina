@@ -12,6 +12,9 @@ public class ConditionStep {
     }
 
     public void checkCanonical(Check check) {
+        if (check == null) {
+            throw new IllegalArgumentException("Check can not be null");
+        }
         context.addVerifyCall(condition, check);
     }
 
