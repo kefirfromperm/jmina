@@ -5,7 +5,9 @@ import mina.subject.EmptyCode;
 import mina.subject.Simple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.opentest4j.AssertionFailedError;
 import org.opentest4j.IncompleteExecutionException;
+import org.opentest4j.MultipleFailuresError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,28 +98,35 @@ public class MinaNegativeTest {
     @Test
     public void testArgumentsComparisonLess() {
         on(INFO).check(1, "2");
-        assertThrows(AssertionError.class, () -> log.info("test {}", 1));
+        assertThrows(AssertionFailedError.class, () -> log.info("test {}", 1));
         assertAllCalled();
     }
 
     @Test
     public void testArgumentsComparisonMore() {
         on(INFO).check(1, "2");
-        assertThrows(AssertionError.class, () -> log.info("test {} {} {}", 1, "2", 3.));
+        assertThrows(AssertionFailedError.class, () -> log.info("test {} {} {}", 1, "2", 3.));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testSingleArgumentMismatch() {
+        on(INFO).check(1, "2");
+        assertThrows(AssertionFailedError.class, () -> log.info("test {} {}", 1, "3"));
         assertAllCalled();
     }
 
     @Test
     public void testArgumentsMismatch() {
         on(INFO).check(1, "2");
-        assertThrows(AssertionError.class, () -> log.info("test {} {}", 2, "3"));
+        assertThrows(MultipleFailuresError.class, () -> log.info("test {} {}", 2, "3"));
         assertAllCalled();
     }
 
     @Test
     public void testArgumentsTypeMismatch() {
         on(INFO).check(1, "2");
-        assertThrows(AssertionError.class, () -> log.info("test {} {}", 1, 1));
+        assertThrows(AssertionFailedError.class, () -> log.info("test {} {}", 1, 1));
         assertAllCalled();
     }
 
