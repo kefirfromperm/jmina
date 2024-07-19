@@ -2,11 +2,11 @@ package mina.core;
 
 import mina.context.MinaContext;
 
-public class ConditionStep {
+public class CheckStep {
     private final MinaContext context;
     private final Condition condition;
 
-    ConditionStep(MinaContext context, Condition condition) {
+    CheckStep(MinaContext context, Condition condition) {
         this.context = context;
         this.condition = condition;
     }
