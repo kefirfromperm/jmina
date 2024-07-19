@@ -13,7 +13,6 @@ public final class MinaContextHolder {
     private static final AtomicReference<MinaContext> GLOBAL_CONTEXT = new AtomicReference<>();
     private static final AtomicReference<WeakReference<Thread>> GLOBAL_CONTEXT_THREAD_OWNER = new AtomicReference<>();
 
-
     static {
         useGlobalContext.set(Boolean.parseBoolean(System.getProperty(GLOBAL_CONTEXT_PROPERTY_KEY)));
     }
@@ -21,15 +20,24 @@ public final class MinaContextHolder {
     private MinaContextHolder() {
     }
 
-    public static MinaContext getContext() {
+    public static MinaContext createOrGetContext() {
+        assertParallelAccessToGlobalContext();
         if (useGlobalContext.get()) {
             return GLOBAL_CONTEXT.updateAndGet(context -> context == null ? new MinaContext() : context);
         } else {
-            return getThreadLocalContext();
+            return createOrGetThreadLocalContext();
         }
     }
 
-    private static MinaContext getThreadLocalContext() {
+    public static MinaContext getContext() {
+        if (useGlobalContext.get()) {
+            return GLOBAL_CONTEXT.get();
+        } else {
+            return THREAD_LOCAL_CONTEXT.get();
+        }
+    }
+
+    private static MinaContext createOrGetThreadLocalContext() {
         MinaContext minaContext = THREAD_LOCAL_CONTEXT.get();
         if (minaContext == null) {
             minaContext = new MinaContext();
@@ -39,8 +47,10 @@ public final class MinaContextHolder {
     }
 
     public static void removeContext() {
+        assertParallelAccessToGlobalContext();
         if (useGlobalContext.get()) {
             GLOBAL_CONTEXT.set(null);
+            GLOBAL_CONTEXT_THREAD_OWNER.set(null);
         } else {
             THREAD_LOCAL_CONTEXT.remove();
         }
@@ -51,10 +61,11 @@ public final class MinaContextHolder {
     }
 
     public static void useThreadLocalContext() {
+        assertParallelAccessToGlobalContext();
         useGlobalContext.set(false);
     }
 
-    public static synchronized void assertParallelAccessToGlobalContext() {
+    private static synchronized void assertParallelAccessToGlobalContext() {
         if (!useGlobalContext.get()) {
             return;
         }
@@ -79,7 +90,8 @@ public final class MinaContextHolder {
         }
 
         throw new IllegalStateException(
-                "Mina is configured to use GLOBAL context in a single thread tests but multi access to the context detected"
+                "Mina is configured to use GLOBAL context in a single thread tests but multi access to the context detected. " +
+                        "Current thread is [" + currentThread.getName() + "] but the owner thread is [" + (ownerThread != null ? ownerThread.getName() : null) + "]"
         );
     }
 }

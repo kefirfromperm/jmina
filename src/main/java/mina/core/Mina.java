@@ -14,7 +14,6 @@ public final class Mina {
     }
 
     public static void useThreadLocalContext() {
-        MinaContextHolder.assertParallelAccessToGlobalContext();
         MinaContextHolder.useThreadLocalContext();
     }
 
@@ -24,9 +23,8 @@ public final class Mina {
             Marker marker,
             String messagePattern
     ) {
-        MinaContextHolder.assertParallelAccessToGlobalContext();
         return new CheckStep(
-                MinaContextHolder.getContext(),
+                MinaContextHolder.createOrGetContext(),
                 new Condition(loggerName, level, marker, messagePattern)
         );
     }

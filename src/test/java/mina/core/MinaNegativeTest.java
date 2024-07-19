@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.slf4j.event.Level.ERROR;
 import static org.slf4j.event.Level.INFO;
 
+@SuppressWarnings("LoggingSimilarMessage")
 public class MinaNegativeTest {
     Logger log = LoggerFactory.getLogger(MinaNegativeTest.class);
 
@@ -92,6 +93,70 @@ public class MinaNegativeTest {
     public void testThreeArgumentsMismatchType() {
         on(INFO).check((String str, Integer count, Double pi) -> assertTrue(true));
         assertThrows(ClassCastException.class, () -> log.info("test {} {} {}", "test", 5, "3.14"));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testFourArgumentsMismatchCount() {
+        on(INFO).check((String str, Integer count, Double pi, Short sh) -> assertTrue(true));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test {} {} {}", "test", 5, 3.14));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testFourArgumentsZeroCount() {
+        on(INFO).check((String str, Integer count, Double pi, Short sh) -> assertTrue(true));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test"));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testFourArgumentsMismatchType() {
+        on(INFO).check((String str, Integer count, Double pi, Short sh) -> assertTrue(true));
+        assertThrows(ClassCastException.class, () -> log.info("test {} {} {} {}", "test", 5, 3.14, 12L));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testFiveArgumentsMismatchCount() {
+        on(INFO).check((String str, Integer count, Double pi, Short sh, Float f) -> assertTrue(true));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test {} {} {} {}", "test", 5, 3.14, 13));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testFiveArgumentsZeroCount() {
+        on(INFO).check((String str, Integer count, Double pi, Short sh, Float f) -> assertTrue(true));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test"));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testFiveArgumentsMismatchType() {
+        on(INFO).check((String str, Integer count, Double pi, Short sh, Float f) -> assertTrue(true));
+        assertThrows(ClassCastException.class, () -> log.info("test {} {} {} {} {}", "test", 5, 3.14, 12, 'e'));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testSixArgumentsMismatchCount() {
+        on(INFO).check((String str, Integer count, Double pi, Short sh, Float f, Character c) -> assertTrue(true));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test {} {} {} {} {}", "test", 5, 3.14, 13, 2.73f));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testSixArgumentsZeroCount() {
+        on(INFO).check((String str, Integer count, Double pi, Short sh, Float f, Character c) -> assertTrue(true));
+        assertThrows(ArgumentsCountException.class, () -> log.info("test"));
+        assertAllCalled();
+    }
+
+    @Test
+    public void testSixArgumentsMismatchType() {
+        on(INFO).check((String str, Integer count, Double pi, Short sh, Float f, Character c) -> assertTrue(true));
+        assertThrows(
+                ClassCastException.class, () -> log.info("test {} {} {} {} {} {}", "test", 5, 3.14, 12, 2.73f, "c"));
         assertAllCalled();
     }
 

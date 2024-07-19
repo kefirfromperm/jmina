@@ -144,6 +144,57 @@ public class MinaTest {
             assertEquals("Test runtime exception 3", throwable.getMessage());
         });
 
+        // Four arguments
+        on(INFO, "{} {} {} {}").check((Integer arg1, String arg2, Character arg3, Double arg4) -> {
+            assertEquals(6, arg1);
+            assertEquals("test 6", arg2);
+            assertEquals('a', arg3);
+            assertEquals(9., arg4);
+        });
+        on(ERROR, "{} {} {}").check((Integer arg1, String arg2, Character arg3, Throwable throwable) -> {
+            assertEquals(7, arg1);
+            assertEquals("test 7", arg2);
+            assertEquals('b', arg3);
+            assertEquals("Test runtime exception 7", throwable.getMessage());
+        });
+
+        // Five arguments
+        on(INFO, "{} {} {} {} {}").check((Integer arg1, String arg2, Character arg3, Character arg4, Double arg5) -> {
+            assertEquals(8, arg1);
+            assertEquals("test 8", arg2);
+            assertEquals('c', arg3);
+            assertEquals('d', arg4);
+            assertEquals(23.56, arg5);
+        });
+        on(ERROR, "{} {} {} {}").check(
+                (Integer arg1, String arg2, Character arg3, Character arg4, Throwable throwable) -> {
+                    assertEquals(9, arg1);
+                    assertEquals("test 9", arg2);
+                    assertEquals('c', arg3);
+                    assertEquals('d', arg4);
+                    assertEquals("Test runtime exception 9", throwable.getMessage());
+                });
+
+        // Six arguments
+        on(INFO, "{} {} {} {} {} {}").check(
+                (Integer arg1, String arg2, Character arg3, Character arg4, Double arg5, String arg6) -> {
+                    assertEquals(10, arg1);
+                    assertEquals("test 10", arg2);
+                    assertNull(arg3);
+                    assertEquals('d', arg4);
+                    assertEquals(23.56, arg5);
+                    assertEquals("r", arg6);
+                });
+        on(ERROR, "{} {} {} {} {}").check(
+                (Integer arg1, String arg2, Character arg3, Character arg4, Double arg5, Throwable throwable) -> {
+                    assertEquals(11, arg1);
+                    assertEquals("test 11", arg2);
+                    assertNull(arg3);
+                    assertEquals('d', arg4);
+                    assertEquals(23.56, arg5);
+                    assertEquals("Test runtime exception 11", throwable.getMessage());
+                });
+
         new Simple().doMultiArguments();
         assertAllCalled();
     }
@@ -243,6 +294,8 @@ public class MinaTest {
     public void testParallelTests() {
         // When using global context
         Mina.useGlobalContext();
+
+        assertDoesNotThrow(() -> on().check());
 
         // We try to run Mina in parallel tests
         assertThrows(IllegalStateException.class, () ->

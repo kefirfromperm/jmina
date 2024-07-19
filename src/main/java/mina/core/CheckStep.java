@@ -34,6 +34,18 @@ public class CheckStep {
         checkCanonical(minaCheck);
     }
 
+    public <T1, T2, T3, T4> void check(FourArgumentsCheck<T1, T2, T3, T4> minaCheck) {
+        checkCanonical(minaCheck);
+    }
+
+    public <T1, T2, T3, T4, T5> void check(FiveArgumentsCheck<T1, T2, T3, T4, T5> minaCheck) {
+        checkCanonical(minaCheck);
+    }
+
+    public <T1, T2, T3, T4, T5, T6> void check(SixArgumentsCheck<T1, T2, T3, T4, T5, T6> minaCheck) {
+        checkCanonical(minaCheck);
+    }
+
     public void check(Object... arguments) {
         checkCanonical(new EqualsCheck(arguments));
     }

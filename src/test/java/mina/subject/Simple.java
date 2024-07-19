@@ -35,6 +35,15 @@ public class Simple {
 
         log.info("{} {} {}", 4, "test 2", 'c');
         log.error("{} {}", 5, "test 3", new RuntimeException("Test runtime exception 3"));
+
+        log.info("{} {} {} {}", 6, "test 6", 'a', 9.);
+        log.error("{} {} {}", 7, "test 7", 'b', new RuntimeException("Test runtime exception 7"));
+
+        log.info("{} {} {} {} {}", 8, "test 8", 'c', 'd', 23.56);
+        log.error("{} {} {} {}", 9, "test 9", 'c', 'd', new RuntimeException("Test runtime exception 9"));
+
+        log.info("{} {} {} {} {} {}", 10, "test 10", null, 'd', 23.56, "r");
+        log.error("{} {} {} {} {}", 11, "test 11", null, 'd', 23.56, new RuntimeException("Test runtime exception 11"));
     }
 
     public void doConditions() {

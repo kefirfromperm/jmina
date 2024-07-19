@@ -19,7 +19,6 @@ public interface ThreeArgumentsCheck<T1, T2, T3> extends Check {
             verify((T1) arguments[0], (T2) arguments[1], (T3) throwable);
         } else {
             throw new ArgumentsCountException(index, 3, arguments.length, throwable != null);
-
         }
     }
 }
