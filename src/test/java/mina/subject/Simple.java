@@ -67,6 +67,9 @@ public class Simple {
 
         // Just message
         log.warn("message 10 {}", 10);
+
+        // Logger, level, message
+        log.error("message 11 {}", 11);
     }
 
     public void doException() {

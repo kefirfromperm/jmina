@@ -11,8 +11,7 @@ import org.slf4j.MDC;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static mina.core.Mina.assertAllCalled;
-import static mina.core.Mina.on;
+import static mina.core.Mina.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.slf4j.event.Level.*;
 
@@ -49,8 +48,22 @@ public class MinaTest {
     }
 
     @Test
+    public void testOnlyLoggerNameCondition() {
+        onLoggerName("mina.subject.Simple").check();
+        new Simple().doSingleLog();
+        assertAllCalled();
+    }
+
+    @Test
     public void testOnlyLevelCondition() {
         on(INFO).check();
+        new Simple().doSingleLog();
+        assertAllCalled();
+    }
+
+    @Test
+    public void testLoggerNameLevelCondition() {
+        on("mina.subject.Simple", INFO).check();
         new Simple().doSingleLog();
         assertAllCalled();
     }
@@ -81,6 +94,19 @@ public class MinaTest {
         on(Simple.MARKER_1, "message 8 {}").check(8);
         on(Simple.TEST_MARKER).check(9);
         on("message 10 {}").check(10);
+        on(Simple.class, ERROR, "message 11 {}").check(11);
+
+        new Simple().doConditions();
+        assertAllCalled();
+    }
+
+    @Test
+    public void testLoggerNamePartialCondition() {
+        on("mina.subject.Simple", DEBUG, Simple.MARKER_1).check(1);
+        on("mina.subject.Simple", Simple.MARKER_2, "message 2 {}").check(2);
+        on("mina.subject.Simple", Simple.MARKER_3).check(3);
+        on("mina.subject.Simple", "message 4 {}").check(4);
+        on("mina.subject.Simple", ERROR, "message 11 {}").check(11);
 
         new Simple().doConditions();
         assertAllCalled();

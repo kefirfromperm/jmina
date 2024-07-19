@@ -32,6 +32,57 @@ public final class Mina {
     }
 
     public static ConditionStep on(
+            String loggerName,
+            Level level,
+            Marker marker
+    ) {
+        return on(loggerName, level, marker, null);
+    }
+
+    public static ConditionStep on(
+            String loggerName,
+            Level level,
+            String messagePattern
+    ) {
+        return on(loggerName, level, null, messagePattern);
+    }
+
+    public static ConditionStep on(
+            String loggerName,
+            Level level
+    ) {
+        return on(loggerName, level, null, null);
+    }
+
+    public static ConditionStep on(
+            String loggerName,
+            Marker marker,
+            String messagePattern
+    ) {
+        return on(loggerName, null, marker, messagePattern);
+    }
+
+    public static ConditionStep on(
+            String loggerName,
+            Marker marker
+    ) {
+        return on(loggerName, null, marker, null);
+    }
+
+    public static ConditionStep on(
+            String loggerName,
+            String messagePattern
+    ) {
+        return on(loggerName, null, null, messagePattern);
+    }
+
+    public static ConditionStep onLoggerName(
+            String loggerName
+    ) {
+        return on(loggerName, null, null, null);
+    }
+
+    public static ConditionStep on(
             Class<?> loggerClass,
             Level level,
             Marker marker,
