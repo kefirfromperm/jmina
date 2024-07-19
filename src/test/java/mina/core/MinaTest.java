@@ -23,7 +23,6 @@ public class MinaTest {
     @AfterEach
     public void clean() {
         Mina.clean();
-        log.info("Cleaned up");
     }
 
     @Test
