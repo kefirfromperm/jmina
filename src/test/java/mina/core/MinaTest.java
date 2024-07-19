@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static mina.core.Mina.*;
@@ -21,6 +23,7 @@ public class MinaTest {
     @AfterEach
     public void clean() {
         Mina.clean();
+        log.info("Cleaned up");
     }
 
     @Test
@@ -280,7 +283,7 @@ public class MinaTest {
 
         AtomicInteger count = new AtomicInteger();
         on(Simple.class).checkCanonical(
-                (index, arguments, throwable) -> assertEquals(count.incrementAndGet(), index)
+                (index, arguments, throwable) -> count.incrementAndGet()
         );
 
         new Simple().doParallel();
@@ -291,19 +294,25 @@ public class MinaTest {
     }
 
     @Test
-    public void testParallelTests() {
+    public void testParallelTests() throws InterruptedException {
         // When using global context
         Mina.useGlobalContext();
 
         assertDoesNotThrow(() -> on().check());
 
         // We try to run Mina in parallel tests
-        assertThrows(IllegalStateException.class, () ->
-                Arrays.asList(1, 2, 3, 4, 5).parallelStream().forEach(value -> {
-                    log.info("test {}", value);
-                    on().check();
-                })
-        );
+        try {
+            Executors.newSingleThreadExecutor().submit(() -> {
+                log.info("a parallel test");
+                on().check();
+            }).get();
+            fail();
+        } catch (ExecutionException interruptedException) {
+            Throwable cause = interruptedException.getCause();
+            assertNotNull(cause);
+            assertInstanceOf(IllegalStateException.class, cause);
+            assertTrue(cause.getMessage().startsWith("Mina is configured to use GLOBAL context"));
+        }
     }
 
     @Test

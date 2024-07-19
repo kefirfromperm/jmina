@@ -1,28 +1,48 @@
 package mina.context;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class GlobalContextStore implements ContextStore {
-    private final AtomicReference<MinaContext> globalContext = new AtomicReference<>();
-    private final AtomicReference<WeakReference<Thread>> ownerThread = new AtomicReference<>();
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private MinaContext globalContext = null;
+    private WeakReference<Thread> ownerThread = null;
 
     @Override
-    public synchronized MinaContext createOrGetContext() {
-        assertParallelAccessToGlobalContext();
-        return globalContext.updateAndGet(context -> context == null ? new MinaContext() : context);
+    public MinaContext createOrGetContext() {
+        lock.writeLock().lock();
+        try {
+            assertParallelAccessToGlobalContext();
+            if (globalContext == null) {
+                globalContext = new MinaContext();
+                ownerThread = new WeakReference<>(Thread.currentThread());
+            }
+            return globalContext;
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     @Override
     public MinaContext getContext() {
-        return globalContext.get();
+        lock.readLock().lock();
+        try {
+            return globalContext;
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     @Override
-    public synchronized void removeContext() {
-        assertParallelAccessToGlobalContext();
-        globalContext.set(null);
-        ownerThread.set(null);
+    public void removeContext() {
+        lock.writeLock().lock();
+        try {
+            assertParallelAccessToGlobalContext();
+            globalContext = null;
+            ownerThread = null;
+        } finally {
+            lock.writeLock().unlock();
+        }
     }
 
     @Override
@@ -30,29 +50,24 @@ public class GlobalContextStore implements ContextStore {
         removeContext();
     }
 
-    private synchronized void assertParallelAccessToGlobalContext() {
-        if (globalContext.get() == null) {
+    private void assertParallelAccessToGlobalContext() {
+        if (globalContext == null) {
+            return;
+        }
+
+        Thread ownerThread = this.ownerThread.get();
+        if (ownerThread == null || !ownerThread.isAlive()) {
             return;
         }
 
         Thread currentThread = Thread.currentThread();
-
-        Thread ownerThread = this.ownerThread.updateAndGet((weak) -> {
-            Thread thread = weak != null ? weak.get() : null;
-            if (thread == null || !thread.isAlive()) {
-                return new WeakReference<>(currentThread);
-            } else {
-                return weak;
-            }
-        }).get();
-
         if (currentThread == ownerThread) {
             return;
         }
 
         throw new IllegalStateException(
                 "Mina is configured to use GLOBAL context in a single thread tests but multi access to the context detected. " +
-                        "Current thread is [" + currentThread.getName() + "] but the owner thread is [" + (ownerThread != null ? ownerThread.getName() : null) + "]"
+                        "Current thread is [" + currentThread.getName() + "] but the owner thread is [" + ownerThread.getName() + "]"
         );
     }
 
