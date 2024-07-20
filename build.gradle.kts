@@ -1,5 +1,6 @@
 plugins {
     java
+    id("com.github.ben-manes.versions") version "0.51.0"
 }
 
 repositories {
@@ -13,7 +14,7 @@ dependencies {
     implementation("org.opentest4j:opentest4j:1.3.0")
 
     // Test dependencies
-    testImplementation(platform("org.junit:junit-bom:5.10.2"))
+    testImplementation(platform("org.junit:junit-bom:5.10.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.slf4j:slf4j-simple:2.0.13")
@@ -26,10 +27,21 @@ java {
     }
 }
 
-tasks.test {
-    useJUnitPlatform()
-    systemProperty("slf4j.provider", "dev.jmina.log.MinaServiceProvider")
-    systemProperty("mina.delegate.provider", "org.slf4j.simple.SimpleServiceProvider")
-    systemProperty("mina.context.global", "false")
+tasks {
+    test {
+        useJUnitPlatform()
+        systemProperty("slf4j.provider", "dev.jmina.log.MinaServiceProvider")
+        systemProperty("jmina.delegate.provider", "org.slf4j.simple.SimpleServiceProvider")
+        systemProperty("jmina.context.global", "false")
+    }
+
+    named(
+        "dependencyUpdates",
+        com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask::class.java
+    ).configure {
+        rejectVersionIf {
+            candidate.version.contains(Regex("-((m\\d+)|(rc(-|\\d)*)|(beta)|(alpha))", RegexOption.IGNORE_CASE))
+        }
+    }
 }
 
