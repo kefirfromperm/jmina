@@ -1,6 +1,6 @@
 # JMina
 
-[![build](https://kefirfromperm.github.com/jmina/actions/workflows/gradle.yml/badge.svg)](https://kefirfromperm.github.com/jmina/actions/workflows/gradle.yml)
+[![build](https://github.com/kefirfromperm/jmina/actions/workflows/gradle.yml/badge.svg)](https://github.com/kefirfromperm/jmina/actions/workflows/gradle.yml)
 
 JMina is a library that extends the capabilities of unit tests in Java. JMina implements the Slf4j logger interface, so
 you can check the values of variables anywhere in your code during test execution.
