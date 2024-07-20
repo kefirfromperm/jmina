@@ -1,8 +1,8 @@
-# Mina
+# JMina
 
-[![build](../../actions/workflows/gradle.yml/badge.svg)](../../actions/workflows/gradle.yml)
+[![build](https://kefirfromperm.github.com/jmina/actions/workflows/gradle.yml/badge.svg)](https://kefirfromperm.github.com/jmina/actions/workflows/gradle.yml)
 
-Mina is a library that extends the capabilities of unit tests in Java. Mina implements the Slf4j logger interface, so
+JMina is a library that extends the capabilities of unit tests in Java. JMina implements the Slf4j logger interface, so
 you can check the values of variables anywhere in your code during test execution.
 
 For example, if you want to test a simple class which solves quadratic equation. Do you want to check the discriminant?
@@ -35,9 +35,9 @@ public class QuadraticEquation {
 }
 ```
 
-[QuadraticEquation.java](src/test/java/mina/example/QuadraticEquation.java)
+[QuadraticEquation.java](src/test/java/dev/jmina/example/QuadraticEquation.java)
 
-Then use Mina in the unit test.
+Then use JMina in the unit test.
 
 ```java
 public class QuadraticEquationTest {
@@ -66,5 +66,5 @@ public class QuadraticEquationTest {
 }
 ```
 
-[QuadraticEquationTest.java](src/test/java/mina/example/QuadraticEquationTest.java)
+[QuadraticEquationTest.java](src/test/java/dev/jmina/example/QuadraticEquationTest.java)
 
