@@ -1,9 +1,50 @@
-# JMina
+# JMina for unit tests
 
 [![build](https://github.com/kefirfromperm/jmina/actions/workflows/gradle.yml/badge.svg)](https://github.com/kefirfromperm/jmina/actions/workflows/gradle.yml)
 
-JMina is a library that extends the capabilities of unit tests in Java. JMina implements the Slf4j logger interface, so
+JMina is a tool library that extends the capabilities of unit tests in Java. JMina implements the Slf4j logger
+interface, so
 you can check the values of variables anywhere in your code during test execution.
+
+## Configure
+
+Right now JMina is published only in the GitHub packages repository. So first of all add the repository to you
+configuration.
+
+```kotlin
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/kefirfromperm/jmina")
+    }
+}
+```
+
+Then add JMina to the dependencies section.
+
+```kotlin
+dependencies {
+    // ...
+
+    // Test dependencies
+    testImplementation("dev.jmina:jmina:0.1.1")
+}
+```
+
+Finally configure JMina as a primary Slf4j provider.
+
+```kotlin
+tasks {
+    test {
+        // Use JMina as an Slf4j provider
+        systemProperty("slf4j.provider", "dev.jmina.log.MinaServiceProvider")
+
+        // Configure JMina proxy to use your preferred logging provider as a delegate 
+        systemProperty("jmina.delegate.provider", "org.slf4j.simple.SimpleServiceProvider")
+    }
+}
+```
+
+## Overview
 
 For example, if you want to test a simple class which solves quadratic equation. Do you want to check the discriminant?
 Just add a log call to the right place.

@@ -1,5 +1,3 @@
-import java.net.URI
-
 plugins {
     java
     `maven-publish`
@@ -69,7 +67,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = URI("https://maven.pkg.github.com/kefirfromperm/jmina")
+            url = uri("https://maven.pkg.github.com/kefirfromperm/jmina")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
