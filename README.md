@@ -1,6 +1,8 @@
 # JMina for unit tests
 
-[![build](https://github.com/kefirfromperm/jmina/actions/workflows/gradle.yml/badge.svg)](https://github.com/kefirfromperm/jmina/actions/workflows/gradle.yml)
+[![build](https://github.com/kefirfromperm/jmina/actions/workflows/build.yml/badge.svg)](https://github.com/kefirfromperm/jmina/actions/workflows/build.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/kefirfromperm/jmina)](https://github.com/kefirfromperm/jmina/packages/2209486)
+[![GitHub License](https://img.shields.io/github/license/kefirfromperm/jmina)](LICENSE)
 
 JMina is a tool library that extends the capabilities of unit tests in Java. JMina implements the Slf4j logger
 interface, so
