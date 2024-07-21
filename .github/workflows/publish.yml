@@ -16,7 +16,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@3
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Publish package
         run: ./gradlew publish
