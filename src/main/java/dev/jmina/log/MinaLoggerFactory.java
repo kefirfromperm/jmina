@@ -35,6 +35,9 @@ public class MinaLoggerFactory implements ILoggerFactory {
 
     /**
      * Actually creates the logger for the given name.
+     *
+     * @param name a logger name
+     * @return a logger
      */
     protected Logger createLogger(String name) {
         MinaLogger minaLogger = new MinaLogger(name);

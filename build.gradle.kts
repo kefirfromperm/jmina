@@ -1,5 +1,6 @@
 plugins {
     java
+    `maven-publish`
     id("com.github.ben-manes.versions") version "0.51.0"
 }
 
@@ -24,6 +25,43 @@ dependencies {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(8)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "dev.jmina"
+            artifactId = "jmina"
+            version = "0.1.0"
+
+            from(components["java"])
+
+            pom {
+                name = "JMina for unit tests"
+                description = "A simple tool to verify log calls during tests"
+                url = "https://jmina.dev"
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "kefirfromperm"
+                        name = "Vitalii Samolovskikh"
+                        email = "kefirfromperm@gmail.com"
+                    }
+                }
+                scm {
+                    connection = "scm:git:ssh://git@github.com:kefirfromperm/jmina.git"
+                    url = "https://github.com/kefrifromperm/jmina"
+                }
+            }
+        }
     }
 }
 
