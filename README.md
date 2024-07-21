@@ -4,9 +4,12 @@
 [![GitHub Release](https://img.shields.io/github/v/release/kefirfromperm/jmina)](https://github.com/kefirfromperm/jmina/packages/2209486)
 [![GitHub License](https://img.shields.io/github/license/kefirfromperm/jmina)](LICENSE)
 
+> [!NOTE]
+> JMina is not [Apache MINA](https://mina.apache.org/) and is not associated with it in any way. Unfortunately, I
+> remembered about it after I registered the domain name.
+
 JMina is a tool library that extends the capabilities of unit tests in Java. JMina implements the Slf4j logger
-interface, so
-you can check the values of variables anywhere in your code during test execution.
+interface, so you can check the values of variables anywhere in your code during test execution.
 
 ## Configure
 
