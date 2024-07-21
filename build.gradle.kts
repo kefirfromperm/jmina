@@ -1,3 +1,5 @@
+import java.net.URI
+
 plugins {
     java
     `maven-publish`
@@ -60,6 +62,17 @@ publishing {
                     connection = "scm:git:ssh://git@github.com:kefirfromperm/jmina.git"
                     url = "https://github.com/kefrifromperm/jmina"
                 }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = URI("https://maven.pkg.github.com/kefirfromperm/jmina")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
             }
         }
     }
