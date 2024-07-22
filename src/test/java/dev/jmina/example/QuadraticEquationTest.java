@@ -30,6 +30,7 @@ public class QuadraticEquationTest {
 
     @AfterEach
     public void clean() {
+        // Don't forget to clean-up context after each test
         Mina.clean();
     }
 }

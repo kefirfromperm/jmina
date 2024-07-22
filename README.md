@@ -8,8 +8,13 @@
 > JMina is not [Apache MINA](https://mina.apache.org/) and is not associated with it in any way. Unfortunately, I
 > remembered about it after I registered the domain name.
 
-JMina is a tool library that extends the capabilities of unit tests in Java. JMina implements the Slf4j logger
-interface, so you can check the values of variables anywhere in your code during test execution.
+JMina allows to validate variables anywhere in your code during unit test. It implements [Slf4j](https://www.slf4j.org/)
+logger interface and allows you to do not make valuable changes in your code to use JMina. In a unit test you can add
+any specific verifications for you log calls.
+
+```java
+on(MyClass.class, TRACE, "My variable {}").check(val -> assertEquals("TEST", val));
+```
 
 ## Configure
 
@@ -28,32 +33,46 @@ Then add JMina to the dependencies section.
 
 ```kotlin
 dependencies {
-    // ...
-
-    // Test dependencies
     testImplementation("dev.jmina:jmina:0.1.1")
 }
 ```
 
-Finally configure JMina as a primary Slf4j provider.
+Finally, configure JMina as a primary SLF4J service provider. Define system properties for unit tests.
 
+| System Property           | Value                                                       | Description                                                              |
+|---------------------------|-------------------------------------------------------------|--------------------------------------------------------------------------|
+| `slf4j.provider`          | `dev.jmina.log.MinaServiceProvider`                         | Use JMina as a primary SLF4J provider. Mandatory.                        |
+| `jmina.delegate.provider` | An SLF4J service provider of your preffered logging library | Configure JMina proxy to use your preferred SLF4J provider as a delegate |
+| `jmina.context.global`    | `true` or `false`                                           | User global context store or thread local                                |
+
+Gradle example
 ```kotlin
 tasks {
     test {
-        // Use JMina as an Slf4j provider
         systemProperty("slf4j.provider", "dev.jmina.log.MinaServiceProvider")
-
-        // Configure JMina proxy to use your preferred logging provider as a delegate 
-        systemProperty("jmina.delegate.provider", "org.slf4j.simple.SimpleServiceProvider")
+        systemProperty("jmina.delegate.provider", "ch.qos.logback.classic.spi.LogbackServiceProvider")
+        systemProperty("jmina.context.global", "true")
     }
 }
 ```
 
-## Overview
+### Global Context Store vs. Thread Local Context Store
 
-For example, if you want to test a simple class which solves quadratic equation. Do you want to check the discriminant?
-Just add a log call to the right place.
+JMina works in two modes - global context store and thread local context store. When you choose to use a global
+context store JMina create a single context for all threads. In case of a thread local context store it creates contexts
+for each thread in a thread local variables.
 
+The *global context store* is suitable for testing a multithreading code in a single thread test environment. It is
+incompatible with multithreading tests.
+
+The *thread local context* store is used for a single thread code and a multithreading test environment. It's
+incompatible
+with a multithreading code.
+
+## Quick Example
+
+Iif you want to test a simple class which solves quadratic equation. Do you want to check the discriminant? Of course!
+Just add a log call to the right place and put there the discriminant value.
 ```java
 public class QuadraticEquation {
     private final Logger log = LoggerFactory.getLogger(QuadraticEquation.class);
@@ -61,7 +80,7 @@ public class QuadraticEquation {
     public List<Double> solve(double a, double b, double c) {
         double discriminant = b * b - 4 * a * c;
 
-        log.debug("discriminant: {}", discriminant);
+        log.debug("discriminant: {}", discriminant);    // Log the discriminant value to verify it during test execution
 
         if (discriminant < 0) {
             return Collections.emptyList();
@@ -80,11 +99,9 @@ public class QuadraticEquation {
     }
 }
 ```
-
 [QuadraticEquation.java](src/test/java/dev/jmina/example/QuadraticEquation.java)
 
-Then use JMina in the unit test.
-
+Then use JMina checks in the unit test.
 ```java
 public class QuadraticEquationTest {
     @Test
@@ -107,10 +124,10 @@ public class QuadraticEquationTest {
 
     @AfterEach
     public void clean() {
+        // Don't forget to clean-up context after each test
         Mina.clean();
     }
 }
 ```
-
 [QuadraticEquationTest.java](src/test/java/dev/jmina/example/QuadraticEquationTest.java)
 

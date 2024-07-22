@@ -15,7 +15,7 @@ public class QuadraticEquation {
     public List<Double> solve(double a, double b, double c) {
         double discriminant = b * b - 4 * a * c;
 
-        log.debug("discriminant: {}", discriminant);
+        log.debug("discriminant: {}", discriminant);    // Log the discriminant value to verify it during test execution
 
         if (discriminant < 0) {
             return Collections.emptyList();
