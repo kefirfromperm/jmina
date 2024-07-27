@@ -18,26 +18,16 @@ on(MyClass.class, TRACE, "My variable {}").check(val -> assertEquals("TEST", val
 
 ## Configure
 
-Right now JMina is published only in the GitHub packages repository. So first of all add the repository to you
-configuration.
-
-```kotlin
-repositories {
-    maven {
-        url = uri("https://maven.pkg.github.com/kefirfromperm/jmina")
-    }
-}
-```
-
-Then add JMina to the dependencies section.
+JMina is published in Maven Central repository. To start to use it just add JMina to the dependencies section in your 
+Gradle or Maven file.
 
 ```kotlin
 dependencies {
-    testImplementation("dev.jmina:jmina:0.1.1")
+    testImplementation("dev.jmina:jmina:0.1.2")
 }
 ```
 
-Finally, configure JMina as a primary SLF4J service provider. Define system properties for unit tests.
+Configure JMina. Define system properties for unit tests.
 
 | System Property           | Value                                                       | Description                                                              |
 |---------------------------|-------------------------------------------------------------|--------------------------------------------------------------------------|
