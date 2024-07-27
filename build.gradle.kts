@@ -1,8 +1,16 @@
+import org.jreleaser.model.Active
+import org.jreleaser.model.Signing
+
 plugins {
-    java
+    `java-library`
     `maven-publish`
     id("com.github.ben-manes.versions") version "0.51.0"
+    id("org.jreleaser") version "1.13.1"
 }
+
+
+group = "dev.jmina"
+version = "0.1.2"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -35,7 +43,6 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "dev.jmina"
             artifactId = "jmina"
-            version = "0.1.1"
 
             from(components["java"])
 
@@ -57,20 +64,35 @@ publishing {
                     }
                 }
                 scm {
-                    connection = "scm:git:ssh://git@github.com:kefirfromperm/jmina.git"
-                    url = "https://github.com/kefrifromperm/jmina"
+                    connection = "scm:git:git://git@github.com:kefirfromperm/jmina.git"
+                    developerConnection = "scm:git:ssh://git@github.com:kefirfromperm/jmina.git"
+                    url = "https://github.com/kefirfromperm/jmina"
                 }
             }
         }
-    }
 
-    repositories {
+        repositories {
+            maven {
+                url = uri(layout.buildDirectory.dir("staging-deploy"))
+            }
+        }
+    }
+}
+
+jreleaser {
+    signing {
+        active = Active.ALWAYS
+        armored = true
+        mode = Signing.Mode.FILE
+    }
+    deploy {
         maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/kefirfromperm/jmina")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+            mavenCentral {
+                register("sonatype") {
+                    active = Active.ALWAYS
+                    url = "https://central.sonatype.com/api/v1/publisher"
+                    stagingRepository("build/staging-deploy")
+                }
             }
         }
     }
