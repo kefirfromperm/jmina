@@ -6,7 +6,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class ForbiddenCheck implements Check {
+class ForbiddenCheck implements Check {
     private final Condition condition;
 
     public ForbiddenCheck(Condition condition) {

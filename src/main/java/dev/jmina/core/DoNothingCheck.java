@@ -1,6 +1,6 @@
 package dev.jmina.core;
 
-public class DoNothingCheck implements Check {
+class DoNothingCheck implements Check {
     private static final Check INSTANCE = new DoNothingCheck();
 
     private DoNothingCheck() {
