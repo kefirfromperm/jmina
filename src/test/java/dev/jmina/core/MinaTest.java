@@ -346,4 +346,14 @@ public class MinaTest {
 
         assertAllCalled();
     }
+
+    @Test
+    public void testForbiddenNotCalled() {
+        on(ERROR).exception();
+        on(INFO).check();
+
+        log.info("Test forbidden not called");
+
+        assertAllCalled();
+    }
 }

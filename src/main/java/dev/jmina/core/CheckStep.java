@@ -160,6 +160,6 @@ public final class CheckStep {
      * Always throw an error on a condition call
      */
     public void exception() {
-        checkCanonical(new ForbiddenCheck(condition));
+        context.addForbidden(condition);
     }
 }

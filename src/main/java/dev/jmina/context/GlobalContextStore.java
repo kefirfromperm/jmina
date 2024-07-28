@@ -70,5 +70,4 @@ public class GlobalContextStore implements ContextStore {
                         "Current thread is [" + currentThread.getName() + "] but the owner thread is [" + ownerThread.getName() + "]"
         );
     }
-
 }

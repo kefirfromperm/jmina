@@ -1,7 +1,6 @@
 package dev.jmina.log;
 
-import dev.jmina.context.MinaContext;
-import dev.jmina.context.MinaContextHolder;
+import dev.jmina.core.MinaHandler;
 import org.slf4j.Marker;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.AbstractLogger;
@@ -18,10 +17,8 @@ public class MinaLogger extends AbstractLogger {
 
     @Override
     protected void handleNormalizedLoggingCall(Level level, Marker marker, String messagePattern, Object[] arguments, Throwable throwable) {
-        MinaContext context = MinaContextHolder.getContext();
-        if (context != null) {
-            context.handle(name, level, marker, messagePattern, arguments, throwable);
-        }
+        MinaHandler.handle(name, level, marker, messagePattern, arguments, throwable);
+
     }
 
     @Override

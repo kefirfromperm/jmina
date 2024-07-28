@@ -360,7 +360,7 @@ public final class Mina {
      * @throws org.opentest4j.IncompleteExecutionException if some logs by defined conditions were not called
      */
     public static void assertAllCalled() {
-        MinaContextHolder.getContext().verifyLost();
+        MinaHandler.verifyLost();
     }
 
     public static void clean() {
