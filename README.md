@@ -3,6 +3,7 @@
 [![build](https://github.com/kefirfromperm/jmina/actions/workflows/build.yml/badge.svg)](https://github.com/kefirfromperm/jmina/actions/workflows/build.yml)
 [![GitHub Release](https://img.shields.io/github/v/release/kefirfromperm/jmina)](https://github.com/kefirfromperm/jmina/packages/2209486)
 [![GitHub License](https://img.shields.io/github/license/kefirfromperm/jmina)](LICENSE)
+[![javadoc](https://javadoc.io/badge2/dev.jmina/jmina/javadoc.svg)](https://javadoc.io/doc/dev.jmina/jmina)
 
 > [!NOTE]
 > JMina is not [Apache MINA](https://mina.apache.org/) and is not associated with it in any way. Unfortunately, I

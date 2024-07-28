@@ -9,9 +9,9 @@ import org.slf4j.event.Level;
  * <p>
  * {@code on(...)} - these methods responsible for condition to filter logging calls. It creates a
  * {@link dev.jmina.core.CheckStep} object. And this object can be used add verification for a logging call. For example
- * <pre>
+ * <pre>{@code
  *     on(MyClass.class, Level.DEBUG, "my comment {}").check(myArg -> assertEquals("test", myArg));
- * </pre>
+ * }</pre>
  * It should be put before call your code from the test.
  * <p>
  * In the end of your code you should call {@link #assertAllCalled} to check that your code has called all the needed
