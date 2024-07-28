@@ -10,7 +10,7 @@ plugins {
 
 
 group = "dev.jmina"
-version = "0.1.2"
+version = "0.1.3"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -83,7 +83,7 @@ jreleaser {
     signing {
         active = Active.ALWAYS
         armored = true
-        mode = Signing.Mode.FILE
+        mode = Signing.Mode.of(System.getenv("SIGNING_MODE") ?: "MEMORY")
     }
     deploy {
         maven {
