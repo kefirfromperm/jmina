@@ -1,7 +1,7 @@
 # JMina for unit tests
 
 [![build](https://github.com/kefirfromperm/jmina/actions/workflows/build.yml/badge.svg)](https://github.com/kefirfromperm/jmina/actions/workflows/build.yml)
-[![GitHub Release](https://img.shields.io/github/v/release/kefirfromperm/jmina)](https://github.com/kefirfromperm/jmina/packages/2209486)
+[![Maven Central Version](https://img.shields.io/maven-central/v/dev.jmina/jmina)](https://central.sonatype.com/artifact/dev.jmina/jmina)
 [![GitHub License](https://img.shields.io/github/license/kefirfromperm/jmina)](LICENSE)
 [![javadoc](https://javadoc.io/badge2/dev.jmina/jmina/javadoc.svg)](https://javadoc.io/doc/dev.jmina/jmina)
 
@@ -24,7 +24,7 @@ Gradle or Maven file.
 
 ```kotlin
 dependencies {
-    testImplementation("dev.jmina:jmina:0.1.2")
+    testImplementation("dev.jmina:jmina:0.1.3")
 }
 ```
 
