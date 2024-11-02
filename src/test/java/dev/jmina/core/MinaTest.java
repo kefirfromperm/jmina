@@ -242,7 +242,8 @@ public class MinaTest {
     @Test
     public void testIndex() {
         AtomicInteger count = new AtomicInteger();
-        on(Simple.class).checkCanonical((index, arguments, throwable) -> assertEquals(count.incrementAndGet(), index));
+        on(Simple.class).checkCanonical(
+                (index, arguments, throwable) -> assertEquals(count.incrementAndGet() - 1, index));
 
         new Simple().doSomething();
 

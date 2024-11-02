@@ -33,7 +33,7 @@ public final class CheckStep {
      * The canonical check. It is a method which allows to verify most of the data. The verification closure
      * receive three parameters.
      * <ul>
-     * <li>index - 1-based the ordinal index of the log call</li>
+     * <li>index - 0-based the ordinal index of the log call</li>
      * <li>arguments - an array of the log arguments</li>
      * <li>throwable - a throwable from the log call</li>
      * </ul>

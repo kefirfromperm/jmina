@@ -34,7 +34,7 @@ public class MinaContext {
     }
 
     public int incrementAndGetIndex(Condition condition) {
-        return counters.computeIfAbsent(condition, ignore -> new AtomicInteger()).incrementAndGet();
+        return counters.computeIfAbsent(condition, ignore -> new AtomicInteger(-1)).incrementAndGet();
     }
 
     public boolean isCalled(Condition condition) {
