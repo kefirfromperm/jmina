@@ -4,6 +4,7 @@
 [![Maven Central Version](https://img.shields.io/maven-central/v/dev.jmina/jmina)](https://central.sonatype.com/artifact/dev.jmina/jmina)
 [![GitHub License](https://img.shields.io/github/license/kefirfromperm/jmina)](LICENSE)
 [![javadoc](https://javadoc.io/badge2/dev.jmina/jmina/javadoc.svg)](https://javadoc.io/doc/dev.jmina/jmina)
+[![Examples](https://img.shields.io/badge/examples-indigo)](https://github.com/kefirfromperm/jmina-examples)
 
 > [!NOTE]
 > JMina is not [Apache MINA](https://mina.apache.org/) and is not associated with it in any way. Unfortunately, I
@@ -16,6 +17,9 @@ any specific verifications for you log calls.
 ```java
 on(MyClass.class, TRACE, "My variable {}").check(val -> assertEquals("TEST", val));
 ```
+
+> [!TIP]
+> More examples can be found in the repository https://github.com/kefirfromperm/jmina-examples
 
 ## Configure
 
