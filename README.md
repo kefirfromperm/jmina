@@ -24,7 +24,7 @@ Gradle or Maven file.
 
 ```kotlin
 dependencies {
-    testImplementation("dev.jmina:jmina:0.1.3")
+    testImplementation("dev.jmina:jmina:0.1.4")
 }
 ```
 
