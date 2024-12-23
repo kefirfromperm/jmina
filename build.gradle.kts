@@ -23,7 +23,7 @@ dependencies {
     implementation("org.opentest4j:opentest4j:1.3.0")
 
     // Test dependencies
-    testImplementation(platform("org.junit:junit-bom:5.11.3"))
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.slf4j:slf4j-simple:2.0.16")
