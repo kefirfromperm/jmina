@@ -5,7 +5,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.github.ben-manes.versions") version "0.52.0"
-    id("org.jreleaser") version "1.16.0"
+    id("org.jreleaser") version "1.17.0"
 }
 
 
