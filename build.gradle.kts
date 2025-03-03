@@ -26,7 +26,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("org.slf4j:slf4j-simple:2.0.16")
+    testImplementation("org.slf4j:slf4j-simple:2.0.17")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
