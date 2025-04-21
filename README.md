@@ -66,7 +66,7 @@ with a multithreading code.
 
 ## Quick Example
 
-Iif you want to test a simple class which solves quadratic equation. Do you want to check the discriminant? Of course!
+If you want to test a simple class which solves quadratic equation. Do you want to check the discriminant? Of course!
 Just add a log call to the right place and put there the discriminant value.
 ```java
 public class QuadraticEquation {
