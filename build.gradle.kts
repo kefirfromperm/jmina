@@ -4,8 +4,8 @@ import org.jreleaser.model.Signing
 plugins {
     `java-library`
     `maven-publish`
-    id("com.github.ben-manes.versions") version "0.51.0"
-    id("org.jreleaser") version "1.14.0"
+    id("com.github.ben-manes.versions") version "0.52.0"
+    id("org.jreleaser") version "1.17.0"
 }
 
 
@@ -19,14 +19,14 @@ repositories {
 
 dependencies {
     // This dependency is used by the application.
-    implementation("org.slf4j:slf4j-api:2.0.16")
+    implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("org.opentest4j:opentest4j:1.3.0")
 
     // Test dependencies
-    testImplementation(platform("org.junit:junit-bom:5.11.3"))
+    testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("org.slf4j:slf4j-simple:2.0.16")
+    testImplementation("org.slf4j:slf4j-simple:2.0.17")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
