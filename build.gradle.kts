@@ -4,7 +4,7 @@ import org.jreleaser.model.Signing
 plugins {
     `java-library`
     `maven-publish`
-    id("com.github.ben-manes.versions") version "0.52.0"
+    id("com.github.ben-manes.versions") version "0.53.0"
     id("org.jreleaser") version "1.18.0"
 }
 
