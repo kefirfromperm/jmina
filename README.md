@@ -10,21 +10,45 @@
 > JMina is not [Apache MINA](https://mina.apache.org/) and is not associated with it in any way. Unfortunately, I
 > remembered about it after I registered the domain name.
 
-JMina allows to validate variables anywhere in your code during unit test. It implements [Slf4j](https://www.slf4j.org/)
-logger interface and allows you to do not make valuable changes in your code to use JMina. In a unit test you can add
-any specific verifications for you log calls.
+JMina is a unit testing library for Java that lets you verify log call arguments anywhere inside your code — without
+changing a single line of production logic. It implements the [SLF4J](https://www.slf4j.org/) logger interface and
+intercepts log calls during test execution.
 
 ```java
-on(MyClass.class, TRACE, "My variable {}").check(val -> assertEquals("TEST", val));
+Mina.on(MyClass.class, DEBUG, "value: {}").check((String val) -> assertEquals("expected", val));
 ```
 
 > [!TIP]
 > More examples can be found in the repository https://github.com/kefirfromperm/jmina-examples
 
-## Configure
+## Why JMina?
 
-JMina is published in Maven Central repository. To start to use it just add JMina to the dependencies section in your 
-Gradle or Maven file.
+Testing internal state is hard. You can return values, expose fields, or pass mocks around — but sometimes the cleanest
+solution is to log the value and verify it in the test. JMina makes that practical:
+
+- **No production code changes.** Use your existing SLF4J log calls as test observation points. No injected mocks, no
+  extra return values, no refactoring.
+- **Works alongside your real logger.** Configure a delegate SLF4J provider and JMina passes every log call through to
+  it, so logging still works normally during tests.
+- **Fails at the right place.** When a forbidden log is triggered, the test fails immediately with a stack trace
+  pointing into your code — not at a generic assertion at the end of the test.
+
+## How It Works
+
+JMina registers itself as an SLF4J service provider. When your code calls `LoggerFactory.getLogger(...)`, SLF4J routes
+through JMina. On every log call, JMina:
+
+1. Matches the call against the conditions you registered with `on(...)`.
+2. Runs your verification lambda (or throws immediately if `.exception()` was used).
+3. Optionally forwards the call to a delegate logger (e.g., Logback, SLF4J Simple).
+
+Because JMina sits at the SLF4J layer, no instrumentation or bytecode manipulation is needed.
+
+## Setup
+
+JMina is published to Maven Central.
+
+### Gradle
 
 ```kotlin
 dependencies {
@@ -32,42 +56,59 @@ dependencies {
 }
 ```
 
-Configure JMina. Define system properties for unit tests.
+### Maven
 
-| System Property           | Value                                                       | Description                                                              |
-|---------------------------|-------------------------------------------------------------|--------------------------------------------------------------------------|
-| `slf4j.provider`          | `dev.jmina.log.MinaServiceProvider`                         | Use JMina as a primary SLF4J provider. Mandatory.                        |
-| `jmina.delegate.provider` | An SLF4J service provider of your preffered logging library | Configure JMina proxy to use your preferred SLF4J provider as a delegate |
-| `jmina.context.global`    | `true` or `false`                                           | User global context store or thread local                                |
+```xml
+<dependency>
+    <groupId>dev.jmina</groupId>
+    <artifactId>jmina</artifactId>
+    <version>0.1.4</version>
+    <scope>test</scope>
+</dependency>
+```
 
-Gradle example
+### System Properties
+
+Configure JMina by setting system properties for the test task.
+
+| System Property           | Value                                                         | Description                                                       |
+|---------------------------|---------------------------------------------------------------|-------------------------------------------------------------------|
+| `slf4j.provider`          | `dev.jmina.log.MinaServiceProvider`                           | Use JMina as the SLF4J provider. **Mandatory.**                   |
+| `jmina.delegate.provider` | An SLF4J service provider class name of your logging library  | Forward log calls to a real logger alongside JMina interception   |
+| `jmina.context.global`    | `true` or `false`                                             | Use global context store or thread-local (see below)              |
+
+Gradle example:
+
 ```kotlin
 tasks {
     test {
+        useJUnitPlatform()
         systemProperty("slf4j.provider", "dev.jmina.log.MinaServiceProvider")
         systemProperty("jmina.delegate.provider", "ch.qos.logback.classic.spi.LogbackServiceProvider")
-        systemProperty("jmina.context.global", "true")
+        systemProperty("jmina.context.global", "false")
     }
 }
 ```
 
-### Global Context Store vs. Thread Local Context Store
+### Global vs Thread-Local Context
 
-JMina works in two modes - global context store and thread local context store. When you choose to use a global
-context store JMina create a single context for all threads. In case of a thread local context store it creates contexts
-for each thread in a thread local variables.
+JMina manages test conditions in a *context store*. There are two modes:
 
-The *global context store* is suitable for testing a multithreading code in a single thread test environment. It is
-incompatible with multithreading tests.
+**Thread-local context** (`jmina.context.global=false`) — Each thread gets its own isolated context. Conditions
+registered on one thread are invisible to others. This is the right choice when:
+- Your production code runs on a single thread, and
+- Tests run in parallel (each test thread stays isolated).
 
-The *thread local context* store is used for a single thread code and a multithreading test environment. It's
-incompatible
-with a multithreading code.
+**Global context** (`jmina.context.global=true`) — All threads share one context. Conditions registered on the test
+thread are visible to any thread that calls the logger. Use this when:
+- Your production code spawns its own threads (the log call happens on a different thread than the test), and
+- Tests run sequentially (parallel tests would collide on the shared context).
 
 ## Quick Example
 
-If you want to test a simple class which solves quadratic equation. Do you want to check the discriminant? Of course!
-Just add a log call to the right place and put there the discriminant value.
+Say you're testing a class that solves a quadratic equation and you want to verify the discriminant computed inside the
+method. Add a log call at that point in your production code:
+
 ```java
 public class QuadraticEquation {
     private final Logger log = LoggerFactory.getLogger(QuadraticEquation.class);
@@ -75,7 +116,7 @@ public class QuadraticEquation {
     public List<Double> solve(double a, double b, double c) {
         double discriminant = b * b - 4 * a * c;
 
-        log.debug("discriminant: {}", discriminant);    // Log the discriminant value to verify it during test execution
+        log.debug("discriminant: {}", discriminant);    // observation point
 
         if (discriminant < 0) {
             return Collections.emptyList();
@@ -96,33 +137,97 @@ public class QuadraticEquation {
 ```
 [QuadraticEquation.java](src/test/java/dev/jmina/example/QuadraticEquation.java)
 
-Then use JMina checks in the unit test.
+Then verify the internal value in your test:
+
 ```java
 public class QuadraticEquationTest {
     @Test
     public void testSolve() {
-        // Verify discriminant value inside the solve method
-        Mina
-                .on(QuadraticEquation.class, DEBUG, "discriminant: {}")
-                .check((Double discriminant) -> assertEquals(9, discriminant));
+        // Register a check before running the code under test
+        Mina.on(QuadraticEquation.class, DEBUG, "discriminant: {}")
+                .check((Double discriminant) -> assertEquals(9.0, discriminant));
 
-        // Run our code
         List<Double> roots = new QuadraticEquation().solve(1, -1, -2);
 
-        // Verify that all logs were called
+        // Assert that all registered conditions were actually triggered
         Mina.assertAllCalled();
 
-        // Verify roots
-        assertEquals(-1, roots.get(0));
-        assertEquals(2, roots.get(1));
+        assertEquals(-1.0, roots.get(0));
+        assertEquals(2.0, roots.get(1));
     }
 
     @AfterEach
     public void clean() {
-        // Don't forget to clean-up context after each test
-        Mina.clean();
+        Mina.clean();  // Always clean up the context after each test
     }
 }
 ```
 [QuadraticEquationTest.java](src/test/java/dev/jmina/example/QuadraticEquationTest.java)
 
+## API Overview
+
+### Conditions
+
+`Mina.on(...)` filters which log calls to intercept. All parameters are optional — omit any to make it a wildcard for
+that field.
+
+```java
+// Specific: class + level + message pattern
+Mina.on(MyClass.class, DEBUG, "value: {}").check(...);
+
+// By class and level only
+Mina.on(MyClass.class, WARN).check(...);
+
+// By level only — matches any logger at that level
+Mina.on(ERROR).check(...);
+
+// By message pattern only — matches any logger, any level
+Mina.on("value: {}").check(...);
+
+// No filter — matches every log call
+Mina.on().check(...);
+```
+
+You can also filter by logger name string or SLF4J `Marker` instead of a class.
+
+### Checks
+
+After `on(...)`, call one of the `check` methods to define what to verify when the condition matches:
+
+```java
+// Just assert the log was called (use with Mina.assertAllCalled())
+.check()
+
+// Assert argument values with equals()
+.check("expected", 42)
+
+// Lambda with typed arguments (1–6 arguments supported; last can be Throwable)
+.check((String msg) -> assertTrue(msg.startsWith("OK")))
+.check((String msg, Throwable t) -> assertNotNull(t))
+
+// No-argument lambda — run any assertion
+.check(() -> assertTrue(someCondition))
+
+// Verify only the throwable
+.checkThrowable(t -> assertInstanceOf(IOException.class, t))
+```
+
+### Forbidden Logs
+
+Use `.exception()` to assert that a log call must **not** happen. If the condition matches, JMina throws immediately —
+failing the test with a stack trace pointing to the exact log statement inside your code.
+
+```java
+// Fail the test the moment this error log is triggered
+Mina.on(PaymentService.class, ERROR, "Payment failed {}").exception();
+
+paymentService.process(validPayment);  // this must not reach the error branch
+```
+
+## Comparison with Alternatives
+
+| Approach                  | Production code change | Typed arguments    | Any SLF4J backend  | Fails at error point |
+|---------------------------|------------------------|--------------------|--------------------|----------------------|
+| **JMina**                 | None                   | Yes                | Yes                | Yes                  |
+| Mockito (mock logger)     | Inject mock logger     | No (string verify) | N/A                | No                   |
+| Logback `ListAppender`    | None                   | No (strings only)  | Logback only       | No                   |
